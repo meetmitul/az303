@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build application\aspnet-core-dotnet-core --configuration $(buildConfiguration)
+- script: dotnet publish application\aspnet-core-dotnet-core --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 - task: PublishPipelineArtifact@1
   inputs:
