@@ -13,8 +13,10 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build application\aspnet-core-dotnet-core --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'application\aspnet-core-dotnet-core'
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
