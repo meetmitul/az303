@@ -1,0 +1,22 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: windows-2019
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- script: dotnet publish application\aspnet-core-dotnet-core --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'cicd-poc-artifact'
+    publishLocation: 'pipeline'
