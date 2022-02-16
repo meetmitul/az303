@@ -15,8 +15,9 @@ variables:
 steps:
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'build'
+    command: 'publish'
     projects: 'application\aspnet-core-dotnet-core'
+    zipAfterPublish: true
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
