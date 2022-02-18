@@ -20,6 +20,6 @@ steps:
     zipAfterPublish: true
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.BinariesDirectory)/$(Build.BuildId)'
+    targetPath: '$(Pipeline.Workspace)'
     artifact: 'drop-$(Build.BuildId)'
     publishLocation: 'pipeline'
