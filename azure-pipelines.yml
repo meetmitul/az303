@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: windows-2019
+  vmImage: ubuntu-latest
 
 variables:
   buildConfiguration: 'Release'
@@ -20,6 +20,6 @@ steps:
     zipAfterPublish: true
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'cicd-poc-artifact'
+    targetPath: '$(Build.BinariesDirectory)/$(Build.BuildId)'
+    artifact: 'drop-$(Build.BuildId)'
     publishLocation: 'pipeline'
