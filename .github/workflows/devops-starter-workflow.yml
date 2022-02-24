@@ -6,12 +6,12 @@ on:
       - master
 
 env:
-  AZURE_WEBAPP_NAME: "hello-world-api-mp"    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'             # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_NAME: "cicdpoc-prod"    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './application/aspnet-core-dotnet-core'             # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.302'                  # set this to the dot net version to use
-  RESOURCEGROUPNAME: "hello-world-api-mp-rg"
+  RESOURCEGROUPNAME: "rg-cicd-poc-mp"
   LOCATION: "Australia Southeast"
-  HOSTINGPLANNAME: "hello-world-api-mp-plan"
+  HOSTINGPLANNAME: "asp-cicd-poc-mp"
   APPINSIGHTLOCATION: "Australia Southeast"
   SKU: "S1 Standard"
 
