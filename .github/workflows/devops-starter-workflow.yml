@@ -41,11 +41,11 @@ jobs:
         dotnet restore
         dotnet build --configuration Release
         dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
-        dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/build'
+        dotnet publish -c Release -o './build'
 
-    - name: Archive Application
-      run: |
-        zip -qq -r ./buildartifacts/Application.zip '.application/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/build'
+    - name: archive application
+      run: | 
+        zip  ./buildartifacts/Application.zip './build'
 
     - name: Upload Application to Build Artifact
       continue-on-error: false
