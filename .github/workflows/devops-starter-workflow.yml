@@ -7,8 +7,8 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: "cicdpoc-prod"    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './application/aspnet-core-dotnet-core'             # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '3.1.302'                  # set this to the dot net version to use
+  AZURE_WEBAPP_PACKAGE_PATH: 'aspnet-core-dotnet-core'             # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '5.0.x'                  # set this to the dot net version to use
   RESOURCEGROUPNAME: "rg-cicd-poc-mp"
   LOCATION: "Australia Southeast"
   HOSTINGPLANNAME: "asp-cicd-poc-mp"
@@ -45,7 +45,7 @@ jobs:
 
     - name: Archive Application
       run: |
-        zip -qq -r ./buildartifacts/Application.zip . -i '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/build'
+        zip -qq -r ./buildartifacts/Application.zip . -i 'application/build'
 
     - name: Upload Application to Build Artifact
       continue-on-error: false
