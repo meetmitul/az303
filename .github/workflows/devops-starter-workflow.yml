@@ -45,7 +45,7 @@ jobs:
 
     - name: Archive Application
       run: |
-        zip -qq -r ./buildartifacts/Application.zip . -i '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/build'
+        zip -qq -r ./buildartifacts/Application.zip . -i ./Application/build
 
     - name: Upload Application to Build Artifact
       continue-on-error: false
