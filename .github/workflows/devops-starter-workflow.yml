@@ -133,7 +133,7 @@ jobs:
   FunctionalTests:
     name: Functional tests
     runs-on: windows-latest
-    needs: deploy
+    needs: deployToDev
     steps:
 
     - uses: actions/checkout@master
