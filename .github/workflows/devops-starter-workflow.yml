@@ -65,7 +65,8 @@ jobs:
         name: deploymenttemplates
         path: deploymenttemplates
 
-  deploy:
+  deployToDev:
+    name: Deploy To Development
     needs: build
     runs-on: ubuntu-latest
 
@@ -113,6 +114,22 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: './Application/build'
 
+  deployToTest:
+    name: Deploy To Test
+    needs: deployToDev
+    runs-on: ubuntu-latest
+    steps:
+    - name: Step1
+      run: echo "Step1 in deploy to Dev"
+      
+  deployToProduction:
+    name: Deploy To Production
+    needs: deployToTest  
+    runs-on: ubuntu-latest
+    steps:
+    - name: Step1
+      run: echo "Step1 in deploy to Production"  
+      
   FunctionalTests:
     name: Functional tests
     runs-on: windows-latest
