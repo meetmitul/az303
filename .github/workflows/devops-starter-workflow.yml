@@ -72,7 +72,7 @@ jobs:
         name: Development
         url: http://cicdpoc-prod.azurewebsites.net/ 
     env:
-      Environment: Development Environment
+      Title: Development Environment
     steps:
 
     - name: Download Build Artifact
@@ -91,7 +91,7 @@ jobs:
         # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
         files: '**/appsettings.json'
       env:
-        SampleConfig.Title: ${{env.Environment}}
+        SampleConfig.Title: ${{env.Title}}
 
 #    - name: Download an ARM template
 #      uses: actions/download-artifact@v2
@@ -131,22 +131,118 @@ jobs:
     environment:
         name: Test
         url: http://cicdpoc-prod.azurewebsites.net/
-      
     env:
-      Environment: Test Environment
+      Title: Development Environment
     steps:
-    - name: Step1
-      run: echo "Step1 in deploy to Dev"
+
+    - name: Download Build Artifact
+      uses: actions/download-artifact@v2
+      continue-on-error: false
+      with:
+        name: buildartifacts
+        path: buildartifacts
+
+    - name: Unzipping Build artifact
+      run: |
+        unzip -qq ./buildartifacts/Application.zip -d .
+    - name: Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+        files: '**/appsettings.json'
+      env:
+        SampleConfig.Title: ${{env.Title}}
+
+#    - name: Download an ARM template
+#      uses: actions/download-artifact@v2
+#      continue-on-error: false
+#      with:
+#        name: deploymenttemplates
+#        path: deploymenttemplates
+
+#    - name: Unzipping ARM artifact
+#      run: |
+#        unzip -qq ./deploymenttemplates/ArmTemplates.zip -d .
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      continue-on-error: false
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+#    - name: Deploy ARM Template
+#      uses: azure/CLI@v1
+#      continue-on-error: false
+#      with:
+#        inlineScript: |
+          # az group create --name "${{ env.RESOURCEGROUPNAME }}" --location "${{ env.LOCATION }}"
+          # az deployment group create --resource-group "${{ env.RESOURCEGROUPNAME }}" --template-file ./ArmTemplates/windows-webapp-template.json --parameters webAppName="${{ env.AZURE_WEBAPP_NAME }}" hostingPlanName="${{ env.HOSTINGPLANNAME }}" appInsightsLocation="${{ env.APPINSIGHTLOCATION }}" sku="${{ env.SKU }}"
+
+    - name: 'Deploy web app'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: './Application/build'
       
   deployToProduction:
     name: Deploy To Production
     needs: deployToTest  
     runs-on: ubuntu-latest
+    environment:
+        name: Production
+        url: http://cicdpoc-prod.azurewebsites.net/
     env:
-      Environment: Production Environment
+      Title: Prod Environment
     steps:
-    - name: Step1
-      run: echo "Step1 in deploy to Production"  
+
+    - name: Download Build Artifact
+      uses: actions/download-artifact@v2
+      continue-on-error: false
+      with:
+        name: buildartifacts
+        path: buildartifacts
+
+    - name: Unzipping Build artifact
+      run: |
+        unzip -qq ./buildartifacts/Application.zip -d .
+    - name: Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+        files: '**/appsettings.json'
+      env:
+        SampleConfig.Title: ${{env.Title}}
+
+#    - name: Download an ARM template
+#      uses: actions/download-artifact@v2
+#      continue-on-error: false
+#      with:
+#        name: deploymenttemplates
+#        path: deploymenttemplates
+
+#    - name: Unzipping ARM artifact
+#      run: |
+#        unzip -qq ./deploymenttemplates/ArmTemplates.zip -d .
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      continue-on-error: false
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+#    - name: Deploy ARM Template
+#      uses: azure/CLI@v1
+#      continue-on-error: false
+#      with:
+#        inlineScript: |
+          # az group create --name "${{ env.RESOURCEGROUPNAME }}" --location "${{ env.LOCATION }}"
+          # az deployment group create --resource-group "${{ env.RESOURCEGROUPNAME }}" --template-file ./ArmTemplates/windows-webapp-template.json --parameters webAppName="${{ env.AZURE_WEBAPP_NAME }}" hostingPlanName="${{ env.HOSTINGPLANNAME }}" appInsightsLocation="${{ env.APPINSIGHTLOCATION }}" sku="${{ env.SKU }}"
+
+    - name: 'Deploy web app'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: './Application/build'
       
   FunctionalTests:
     name: Functional tests
