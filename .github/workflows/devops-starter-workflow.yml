@@ -42,6 +42,24 @@ jobs:
         dotnet build --configuration Release
         dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
         dotnet publish -c Release -o './build'
+        
+  deployToDev:
+    name: Deploy To Development
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+        name: Development
+        url: http://cicdpoc-prod.azurewebsites.net/ 
+    env:
+      Environment: Development Environment
+    steps:
+    - name: Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+        files: '**/appsettings.json'
+      env:
+        SampleConfig.Environment: "Letssee" #${{env.Environment}}
 
     - name: archive application
       run: | 
@@ -65,17 +83,6 @@ jobs:
         name: deploymenttemplates
         path: deploymenttemplates
 
-  deployToDev:
-    name: Deploy To Development
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-        name: Development
-        url: http://cicdpoc-prod.azurewebsites.net/ 
-    env:
-      Environment: Development Environment
-    steps:
-
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
       continue-on-error: false
@@ -86,14 +93,6 @@ jobs:
     - name: Unzipping Build artifact
       run: |
         unzip -qq ./buildartifacts/Application.zip -d .
-
-    - name: Variable Substitution
-      uses: microsoft/variable-substitution@v1
-      with:
-        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-        files: '**/appsettings.json'
-      env:
-        SampleConfig.Environment: "Letssee" #${{env.Environment}}
 
     - name: Download an ARM template
       uses: actions/download-artifact@v2
