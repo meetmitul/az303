@@ -53,14 +53,6 @@ jobs:
     env:
       Environment: Development Environment
     steps:
-    - name: Variable Substitution
-      uses: microsoft/variable-substitution@v1
-      with:
-        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-        files: '**/appsettings.json'
-      env:
-        SampleConfig.Environment: "Letssee" #${{env.Environment}}
-
     - name: archive application
       run: | 
         zip -qq -r ./buildartifacts/Application.zip ./Application/build
@@ -72,16 +64,16 @@ jobs:
         name: buildartifacts
         path: buildartifacts
 
-    - name: Archive ArmTemplates
-      run: |
-        zip -qq -r ./deploymenttemplates/ArmTemplates.zip ./ArmTemplates
+#    - name: Archive ArmTemplates
+#      run: |
+#        zip -qq -r ./deploymenttemplates/ArmTemplates.zip ./ArmTemplates
 
-    - name: Upload Arm templates to Artifact
-      continue-on-error: false
-      uses: actions/upload-artifact@v2
-      with:
-        name: deploymenttemplates
-        path: deploymenttemplates
+ #   - name: Upload Arm templates to Artifact
+ #     continue-on-error: false
+ #     uses: actions/upload-artifact@v2
+ #     with:
+ #       name: deploymenttemplates
+ #       path: deploymenttemplates
 
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
@@ -93,17 +85,24 @@ jobs:
     - name: Unzipping Build artifact
       run: |
         unzip -qq ./buildartifacts/Application.zip -d .
-
-    - name: Download an ARM template
-      uses: actions/download-artifact@v2
-      continue-on-error: false
+    - name: Variable Substitution
+      uses: microsoft/variable-substitution@v1
       with:
-        name: deploymenttemplates
-        path: deploymenttemplates
+        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+        files: '**/appsettings.json'
+      env:
+        SampleConfig.Environment: "Letssee" #${{env.Environment}}
 
-    - name: Unzipping ARM artifact
-      run: |
-        unzip -qq ./deploymenttemplates/ArmTemplates.zip -d .
+#    - name: Download an ARM template
+#      uses: actions/download-artifact@v2
+#      continue-on-error: false
+#      with:
+#        name: deploymenttemplates
+#        path: deploymenttemplates
+
+#    - name: Unzipping ARM artifact
+#      run: |
+#        unzip -qq ./deploymenttemplates/ArmTemplates.zip -d .
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -111,11 +110,11 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - name: Deploy ARM Template
-      uses: azure/CLI@v1
-      continue-on-error: false
-      with:
-        inlineScript: |
+#    - name: Deploy ARM Template
+#      uses: azure/CLI@v1
+#      continue-on-error: false
+#      with:
+#        inlineScript: |
           # az group create --name "${{ env.RESOURCEGROUPNAME }}" --location "${{ env.LOCATION }}"
           # az deployment group create --resource-group "${{ env.RESOURCEGROUPNAME }}" --template-file ./ArmTemplates/windows-webapp-template.json --parameters webAppName="${{ env.AZURE_WEBAPP_NAME }}" hostingPlanName="${{ env.HOSTINGPLANNAME }}" appInsightsLocation="${{ env.APPINSIGHTLOCATION }}" sku="${{ env.SKU }}"
 
