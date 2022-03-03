@@ -69,6 +69,9 @@ jobs:
     name: Deploy To Development
     needs: build
     runs-on: ubuntu-latest
+    environment:
+        name: Development
+        url: http://cicdpoc-prod.azurewebsites.net/ 
     env:
       Environment: Development Environment
     steps:
@@ -88,7 +91,7 @@ jobs:
       uses: microsoft/variable-substitution@v1
       with:
         # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-        files: ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/appsettings.json
+        files: '**/appsettings.json'
       env:
         SampleConfig.Environment: ${{env.Environment}}
 
@@ -127,6 +130,10 @@ jobs:
     name: Deploy To Test
     needs: deployToDev
     runs-on: ubuntu-latest
+    environment:
+        name: Test
+        url: http://cicdpoc-prod.azurewebsites.net/
+      
     env:
       Environment: Test Environment
     steps:
