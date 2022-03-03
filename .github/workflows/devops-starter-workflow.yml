@@ -225,6 +225,21 @@ jobs:
     - name: Unzipping Build artifact
       run: |
         unzip -qq ./buildartifacts/Application.zip -d .
+    
+    - name: Login to Azure
+      uses: azure/login@v1
+      continue-on-error: false
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Azure key vault - Get Secrets
+      uses: Azure/get-keyvault-secrets@v1
+      id: GetAzureSecrets
+      with:
+        # Name of the azure key vault
+        keyvault: kv-cicd-poc
+        # Name of the secret to be fetched
+        secrets: prodsecret
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
@@ -232,6 +247,8 @@ jobs:
         files: '**/appsettings.json'
       env:
         SampleConfig.Title: ${{env.Title}}
+        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.prodsecret}}
+
 
 #    - name: Download an ARM template
 #      uses: actions/download-artifact@v2
