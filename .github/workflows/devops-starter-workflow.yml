@@ -42,6 +42,27 @@ jobs:
         dotnet build --configuration Release
         dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
         dotnet publish -c Release -o './build'
+    - name: archive application
+      run: | 
+        zip -qq -r ./buildartifacts/Application.zip ./Application/build
+
+    - name: Upload Application to Build Artifact
+      continue-on-error: false
+      uses: actions/upload-artifact@v2
+      with:
+        name: buildartifacts
+        path: buildartifacts
+#    - name: Archive ArmTemplates
+#      run: |
+#        zip -qq -r ./deploymenttemplates/ArmTemplates.zip ./ArmTemplates
+
+ #   - name: Upload Arm templates to Artifact
+ #     continue-on-error: false
+ #     uses: actions/upload-artifact@v2
+ #     with:
+ #       name: deploymenttemplates
+ #       path: deploymenttemplates
+
         
   deployToDev:
     name: Deploy To Development
@@ -53,27 +74,6 @@ jobs:
     env:
       Environment: Development Environment
     steps:
-    - name: archive application
-      run: | 
-        zip -qq -r ./buildartifacts/Application.zip ./Application/build
-
-    - name: Upload Application to Build Artifact
-      continue-on-error: false
-      uses: actions/upload-artifact@v2
-      with:
-        name: buildartifacts
-        path: buildartifacts
-
-#    - name: Archive ArmTemplates
-#      run: |
-#        zip -qq -r ./deploymenttemplates/ArmTemplates.zip ./ArmTemplates
-
- #   - name: Upload Arm templates to Artifact
- #     continue-on-error: false
- #     uses: actions/upload-artifact@v2
- #     with:
- #       name: deploymenttemplates
- #       path: deploymenttemplates
 
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
