@@ -1,0 +1,64 @@
+name: Deploy ASP.NET Core app to Azure Web App 
+on:
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: "cicdpoc-prod"    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './aspnet-core-dotnet-core'             # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '3.1.x'                  # set this to the dot net version to use
+  RESOURCEGROUPNAME: "rg-cicd-poc-mp"
+  LOCATION: "Australia Southeast"
+  HOSTINGPLANNAME: "asp-cicd-poc-mp"
+  APPINSIGHTLOCATION: "Australia Southeast"
+  SKU: "S1 Standard"
+
+jobs:        
+  deployToDev:
+    name: Deploy To Development
+    runs-on: ubuntu-latest
+    environment:
+        name: Development
+        url: http://cicdpoc-prod.azurewebsites.net/ 
+    env:
+      Title: Development Environment
+    steps:
+
+    - name: Download Build Artifact
+      uses: actions/download-artifact@v2
+      continue-on-error: false
+      with:
+        name: buildartifacts
+        path: buildartifacts
+
+    - name: Unzipping Build artifact
+      run: |
+        unzip -qq ./buildartifacts/Application.zip -d .
+    
+    - name: Login to Azure
+      uses: azure/login@v1
+      continue-on-error: false
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Azure key vault - Get Secrets
+      uses: Azure/get-keyvault-secrets@v1
+      id: GetAzureSecrets
+      with:
+        # Name of the azure key vault
+        keyvault: kv-cicd-poc
+        # Name of the secret to be fetched
+        secrets: devsecret
+    - name: Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+        files: '**/appsettings.json'
+      env:
+        SampleConfig.Title: ${{env.Title}}
+        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.devsecret}}
+  
+    - name: 'Deploy web app'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: './Application/build'
