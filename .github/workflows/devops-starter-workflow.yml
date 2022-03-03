@@ -69,7 +69,8 @@ jobs:
     name: Deploy To Development
     needs: build
     runs-on: ubuntu-latest
-
+    env:
+      Environment: Development Environment
     steps:
 
     - name: Download Build Artifact
@@ -82,6 +83,14 @@ jobs:
     - name: Unzipping Build artifact
       run: |
         unzip -qq ./buildartifacts/Application.zip -d .
+
+    - name: Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+        files: ${{AZURE_WEBAPP_PACKAGE_PATH}}/appsettings.json
+      env:
+        SampleConfig.Environment: "${{env.Environment}}"
 
     - name: Download an ARM template
       uses: actions/download-artifact@v2
@@ -118,6 +127,8 @@ jobs:
     name: Deploy To Test
     needs: deployToDev
     runs-on: ubuntu-latest
+    env:
+      Environment: Test Environment
     steps:
     - name: Step1
       run: echo "Step1 in deploy to Dev"
@@ -126,6 +137,8 @@ jobs:
     name: Deploy To Production
     needs: deployToTest  
     runs-on: ubuntu-latest
+    env:
+      Environment: Production Environment
     steps:
     - name: Step1
       run: echo "Step1 in deploy to Production"  
