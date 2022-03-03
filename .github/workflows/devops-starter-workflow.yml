@@ -85,6 +85,21 @@ jobs:
     - name: Unzipping Build artifact
       run: |
         unzip -qq ./buildartifacts/Application.zip -d .
+    
+    - name: Login to Azure
+      uses: azure/login@v1
+      continue-on-error: false
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Azure key vault - Get Secrets
+      uses: Azure/get-keyvault-secrets@v1
+      id: GetAzureSecrets
+      with:
+        # Name of the azure key vault
+        keyvault: kv-cicd-poc
+        # Name of the secret to be fetched
+        secrets: devsecret
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
@@ -92,7 +107,8 @@ jobs:
         files: '**/appsettings.json'
       env:
         SampleConfig.Title: ${{env.Title}}
-
+        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.devsecret}}
+        
 #    - name: Download an ARM template
 #      uses: actions/download-artifact@v2
 #      continue-on-error: false
@@ -104,12 +120,6 @@ jobs:
 #      run: |
 #        unzip -qq ./deploymenttemplates/ArmTemplates.zip -d .
 
-    - name: Login to Azure
-      uses: azure/login@v1
-      continue-on-error: false
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
 #    - name: Deploy ARM Template
 #      uses: azure/CLI@v1
 #      continue-on-error: false
@@ -145,6 +155,12 @@ jobs:
     - name: Unzipping Build artifact
       run: |
         unzip -qq ./buildartifacts/Application.zip -d .
+    - name: Login to Azure
+      uses: azure/login@v1
+      continue-on-error: false
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
     - name: Azure key vault - Get Secrets
       uses: Azure/get-keyvault-secrets@v1
       id: GetAzureSecrets
@@ -152,7 +168,7 @@ jobs:
         # Name of the azure key vault
         keyvault: kv-cicd-poc
         # Name of the secret to be fetched
-        secrets: cicd-poc-secret1
+        secrets: testsecret
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
@@ -160,7 +176,7 @@ jobs:
         files: '**/appsettings.json'
       env:
         SampleConfig.Title: ${{env.Title}}
-        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.cicd-poc-secret1}}
+        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.testsecret}}
 
 
 #    - name: Download an ARM template
@@ -174,12 +190,6 @@ jobs:
 #      run: |
 #        unzip -qq ./deploymenttemplates/ArmTemplates.zip -d .
 
-    - name: Login to Azure
-      uses: azure/login@v1
-      continue-on-error: false
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
 #    - name: Deploy ARM Template
 #      uses: azure/CLI@v1
 #      continue-on-error: false
