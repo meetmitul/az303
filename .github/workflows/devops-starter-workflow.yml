@@ -89,9 +89,9 @@ jobs:
       uses: microsoft/variable-substitution@v1
       with:
         # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-        files: '**/appsettings.json'
+        files: '*/appsettings.json'
       env:
-        SampleConfig.Environment: "Letssee" #${{env.Environment}}
+        SampleConfig.Title: ${{env.Environment}}
 
 #    - name: Download an ARM template
 #      uses: actions/download-artifact@v2
