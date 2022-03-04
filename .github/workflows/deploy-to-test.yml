@@ -4,7 +4,7 @@ on:
   
 jobs:
   deployToTest:
-    uses: octo-org/example-repo/.github/workflows/reusable-workflow.yml@main
+    uses: meetmitul/az303/.github/workflows/deploy-to-test.yml@main
     with:
       Title: TEST1
     secrets:
