@@ -55,9 +55,9 @@ jobs:
       id: GetAzureSecrets
       with:
         # Name of the azure key vault
-        keyvault: kv-cicd-poc
+        keyvault: kv-cicd-poc-${{inputs.Environment}}
         # Name of the secret to be fetched
-        secrets: secret-${{inputs.Environment}}
+        secrets: topsecret
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
@@ -65,7 +65,7 @@ jobs:
         files: '**/appsettings.json'
       env:
         SampleConfig.Title: ${{inputs.Title}}
-        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.secret-${{inputs.Environment}}}}
+        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
   
     - name: 'Deploy web app'
       uses: azure/webapps-deploy@v2
