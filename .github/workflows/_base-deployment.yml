@@ -23,7 +23,7 @@ env:
   SKU: "S1 Standard"
 
 jobs:
-  deployToDev:
+  Deploy:
     name: Deploy To ${{inputs.Environment}}
     runs-on: ubuntu-latest
     environment:
