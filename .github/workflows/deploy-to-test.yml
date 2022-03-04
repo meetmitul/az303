@@ -10,7 +10,7 @@ jobs:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
     needs: build
     with:
-      Title: TEST1
+      Title: TEST2
       Environment: Test
     secrets:
       az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
