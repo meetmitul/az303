@@ -1,6 +1,13 @@
 name: Deploy to Development 
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      Title:
+        required: true
+        type: string
+    secrets:
+      az_credentials:
+        required: true
 
 env:
   AZURE_WEBAPP_NAME: "cicdpoc-prod"    # set this to your application's name
@@ -86,7 +93,7 @@ jobs:
       uses: azure/login@v1
       continue-on-error: false
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.az_credentials }}
     
     - name: Azure key vault - Get Secrets
       uses: Azure/get-keyvault-secrets@v1
@@ -102,7 +109,7 @@ jobs:
         # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
         files: '**/appsettings.json'
       env:
-        SampleConfig.Title: ${{env.Title}}
+        SampleConfig.Title: ${{inputs.Title}}
         SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.devsecret}}
   
     - name: 'Deploy web app'
