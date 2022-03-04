@@ -1,0 +1,11 @@
+name: Deploy to test 
+on:
+  workflow_dispatch:
+  
+jobs:
+  deployToTest:
+    uses: octo-org/example-repo/.github/workflows/reusable-workflow.yml@main
+    with:
+      Title: TEST1
+    secrets:
+      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
