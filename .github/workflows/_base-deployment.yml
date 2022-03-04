@@ -1,7 +1,10 @@
-name: _Base Deploy to Test 
+name: _Base Deploy 
 on:
   workflow_call:
     inputs:
+      Environment:
+        required: true
+        type: string
       Title:
         required: true
         type: string
@@ -69,16 +72,16 @@ jobs:
 
 
   deployToDev:
-    name: Deploy To Development
+    name: Deploy To ${{inputs.Environment}}
     needs: build
     runs-on: ubuntu-latest
     environment:
-        name: Development
+        name: ${{inputs.Environment}}
         url: http://cicdpoc-prod.azurewebsites.net/ 
     env:
-      Title: Development Environment
+      Title: ${{inputs.Environment}} Environment
+    
     steps:
-
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
       continue-on-error: false
