@@ -4,7 +4,7 @@ on:
   
 jobs:
   deployToTest:
-    uses: meetmitul/az303/.github/workflows/base-testdeployment.yml.yml@master
+    uses: meetmitul/az303/.github/workflows/base-testdeployment.yml@master
     with:
       Title: TEST1
     secrets:
