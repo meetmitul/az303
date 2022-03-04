@@ -1,0 +1,53 @@
+name: _Base Deploy to Test 
+on:
+  workflow_call:
+    inputs:
+      Title:
+        required: true
+        type: string
+    secrets:
+      az_credentials:
+        required: true
+
+env:
+  AZURE_WEBAPP_NAME: "cicdpoc-prod"    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './aspnet-core-dotnet-core'             # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '3.1.x'                  # set this to the dot net version to use
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    # Checkout the repo
+    - uses: actions/checkout@master
+    
+    - name: Creating artifact directories
+      run: |
+        mkdir buildartifacts
+        mkdir deploymenttemplates
+
+    # Setup .NET Core SDK
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }} 
+    
+    # Run dotnet build and publish
+    - name: dotnet build unit test and publish
+      run: |
+        cd Application
+        dotnet restore
+        dotnet build --configuration Release
+        dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
+        dotnet publish -c Release -o './build'
+    - name: archive application
+      run: | 
+        zip -qq -r ./buildartifacts/Application.zip ./Application/build
+
+    - name: Upload Application to Build Artifact
+      continue-on-error: false
+      uses: actions/upload-artifact@v2
+      with:
+        name: buildartifacts
+        path: buildartifacts
