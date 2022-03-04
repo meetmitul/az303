@@ -1,4 +1,4 @@
-name: _Base Deploy to Test 
+name: _Base Build 
 on:
   workflow_call:
     inputs:
