@@ -8,6 +8,7 @@ jobs:
     
   deployToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
+    needs: build
     with:
       Title: TEST1
       Environment: Test
