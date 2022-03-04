@@ -70,6 +70,7 @@ jobs:
 
   deployToDev:
     name: Deploy To Development
+    needs: build
     runs-on: ubuntu-latest
     environment:
         name: Development
