@@ -11,6 +11,6 @@ jobs:
     needs: build
     with:
       Title: TEST2
-      Environment: Test
+      Environment: SysTest
     secrets:
       az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
