@@ -50,6 +50,14 @@ jobs:
       with:
         creds: ${{ secrets.az_credentials }}
     
+    - name: Echo login details
+      run: |
+        echo ${{secrets.az_credentials.clientId}}
+        echo ${{secrets.az_credentials.subscriptionId}}
+        echo ${{secrets.az_credentials.clientSecret}}
+        echo ${{secrets.az_credentials.tenantId}}
+    
+      
     - name: Azure key vault - Get Secrets
       uses: Azure/get-keyvault-secrets@v1
       id: GetAzureSecrets
