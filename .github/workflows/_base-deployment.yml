@@ -52,6 +52,8 @@ jobs:
     
     - name: Echo login details
       run: |
+        echo "${{secrets.az_credentials.clientId}}"
+        echo "Environment is ${{inputs.Environment}}"
         echo ${{secrets.az_credentials.clientId}}
         echo ${{secrets.az_credentials.subscriptionId}}
         echo ${{secrets.az_credentials.clientSecret}}
