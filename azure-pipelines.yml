@@ -18,8 +18,9 @@ steps:
     command: 'publish'
     projects: 'application\aspnet-core-dotnet-core'
     zipAfterPublish: true
+    arguments: '--output $(Build.ArtifactStagingDirectory)'
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: 'drop-$(Build.BuildId)'
     publishLocation: 'pipeline'
