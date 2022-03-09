@@ -5,7 +5,7 @@ name: CI
 # Controls when the workflow will run
 on:
   release:
-    types: [released]
+    types: [created,released,published]
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -19,4 +19,4 @@ jobs:
     steps:
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Published
+        run: echo ${{github.event.release}}
