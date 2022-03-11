@@ -11,7 +11,7 @@ jobs:
     
     - name: Echo New Tag
       run: |
-        latestVer = git describe --tags --abbrev=0
+        latestVer = $(git describe --tags --abbrev=0)
         latestVer = $latestVer | cut -c2
         latestVer = $latestVer + 1
         echo $latestVer
