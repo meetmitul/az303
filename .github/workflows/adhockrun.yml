@@ -7,15 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # Checkout the repo
-    - uses: actions/checkout@master
+    - uses: actions/checkout@master 
     
-    - uses: actions/github-script@v6
-      id: set-result
-      with:
-        script: return "Hello!"
-        result-encoding: string
-    - name: Get result
+    - name: Echo New Tag
       run: |
-        echo "${{steps.set-result.outputs.result}}"
-        git tag V1.2
-        git push --tags
+        $latestVer = git describe --tags --abbrev=0 | cut -c2
+        $latestVer = $latestVer + 1
+        echo $latestVer
+    
+    - name: Assign New Tag
+      run: |  
+        # git tag $latestVer
+        # git push --tags
