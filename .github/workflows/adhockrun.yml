@@ -1,4 +1,4 @@
-name: Deploy to test 
+name: _Adhoc Run 
 on:
   workflow_dispatch:
   
