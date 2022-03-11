@@ -12,16 +12,16 @@ jobs:
     - name: Echo New Tag
       run: |
         git tag --list
-        echo "ABC"
-        git describe --tags --abbrev=0
-        echo "XYZ"
-        echo $(git describe --tags --abbrev=0)
-        latestVer=$((git describe --tags --abbrev=0))
-        echo $latestVer
-        latestVer=$(latestVer | cut -c2-)
-        echo $latestVer
-        latestVer=$((latestVer+1) | bc)
-        echo $latestVer
+        # echo "ABC"
+        # git describe --tags --abbrev=0
+        # echo "XYZ"
+        # echo $(git describe --tags --abbrev=0)
+        # latestVer=$((git describe --tags --abbrev=0))
+        # echo $latestVer
+        # latestVer=$(latestVer | cut -c2-)
+        # echo $latestVer
+        # latestVer=$((latestVer+1) | bc)
+        # echo $latestVer
     
     - name: Assign New Tag
       run: |  
