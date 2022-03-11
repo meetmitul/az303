@@ -11,7 +11,9 @@ jobs:
     
     - name: Echo New Tag
       run: |
+        echo "ABC"
         git describe --tags --abbrev=0
+        echo "XYZ"
         echo $(git describe --tags --abbrev=0)
         latestVer=$((git describe --tags --abbrev=0))
         echo $latestVer
