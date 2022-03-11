@@ -1,0 +1,16 @@
+name: Deploy to test 
+on:
+  workflow_dispatch:
+  
+jobs:
+  ApplyNewTag:
+    runs-on: ubuntu-latest
+    steps:
+
+    # Checkout the repo
+    - uses: actions/checkout@master
+    
+    - name: Creating artifact directories
+      run: |
+        mkdir buildartifacts
+        mkdir deploymenttemplates
