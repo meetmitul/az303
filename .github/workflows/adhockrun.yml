@@ -6,8 +6,9 @@ jobs:
   ApplyNewTag:
     runs-on: ubuntu-latest
     steps:
-
     # Checkout the repo
+    - uses: actions/checkout@master
+    
     - uses: actions/github-script@v6
       id: set-result
       with:
