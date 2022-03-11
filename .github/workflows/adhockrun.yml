@@ -6,24 +6,25 @@ jobs:
   ApplyNewTag:
     runs-on: ubuntu-latest
     steps:
-    # Checkout the repo
-    - uses: actions/checkout@master 
+    - name: Checkout code
+    - uses: actions/checkout@v2
+
+    - name: Tag Now
+    - uses: Klemensas/action-autotag@stable
+      with:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
     
-    - name: Echo New Tag
-      run: |
-        git tag --list
-        # echo "ABC"
-        # git describe --tags --abbrev=0
-        # echo "XYZ"
-        # echo $(git describe --tags --abbrev=0)
-        # latestVer=$((git describe --tags --abbrev=0))
-        # echo $latestVer
-        # latestVer=$(latestVer | cut -c2-)
-        # echo $latestVer
-        # latestVer=$((latestVer+1) | bc)
-        # echo $latestVer
-    
-    - name: Assign New Tag
-      run: |  
-        # git tag $latestVer
-        # git push --tags
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes in this Release
+          - First Change
+          - Second Change
+        draft: false
+        prerelease: false
