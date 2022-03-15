@@ -20,9 +20,9 @@ jobs:
       run: |
         git fetch --tags
         latestVersion=$(git describe --tags --always --abbrev=0)
-        majorVersion=$(latestVersion | cut -d '.' -f 1 | cut -d 'v' -f 2)
-        minorVersion=$(latestVersion | cut -d '.' -f 2)
-        hotFixrVersion=$(latestVersion | cut -d '.' -f 3)
+        majorVersion=`echo $latestVersion | cut -d '.' -f 1 | cut -d 'v' -f 2`
+        minorVersion=`echo $latestVersion | cut -d '.' -f 2`
+        hotFixrVersion=`echo $latestVersion | cut -d '.' -f 3`
         echo $latestVersion
         echo $majorVersion
         echo $minorVersion
