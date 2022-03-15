@@ -13,12 +13,12 @@ jobs:
     steps:
     # Checkout the repo
     - uses: actions/checkout@v2
-      #with:
-      #  fetch-depth: 0
+      with:
+        fetch-depth: 20
 
     - name: Echo New Tag
       run: |
-        git describe --tags --always
+        git describe --tags --always --abbrev=0
         latestver=$(git describe --tags --always --abbrev=0)
         majorVersion=$latestVer | cut -d '.' -f 1 | cut -d 'v' -f 2
         minorVersion=$latestVer | cut -d '.' -f 2
