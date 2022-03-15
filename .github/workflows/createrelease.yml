@@ -1,11 +1,10 @@
 name: Create Release 
 on:
-  workflow_dispatch:
-  #push:
-    # Sequence of patterns matched against refs/tags
-   # tags:
-    #  - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
+  workflow_call:
+    inputs:
+      TagName:
+        required: true
+        type: string
 jobs:
   build:
     name: Create Release
@@ -19,8 +18,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ inputs.TagName }}
+          release_name: Release ${{ inputs.TagName }}
           body: |
             Changes in this Release
             - First Change
