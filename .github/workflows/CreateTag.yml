@@ -40,4 +40,4 @@ jobs:
     needs: CreateNewTag
     uses: meetmitul/az303/.github/workflows/createrelease.yml@master
     with:
-      TagName: ${{ needs.CreateNewTag.steps.idNewTag.outputs.newTagName}}
+      TagName: "v3.5.0" #${{ needs.CreateNewTag.steps.idNewTag.outputs.newTagName}}
