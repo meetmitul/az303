@@ -1,0 +1,32 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Create Tag
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  ApplyNewTag:
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repo
+    - uses: actions/checkout@master 
+    
+    - name: Echo New Tag
+      run: |
+        latestVer=$((git describe --tags --abbrev=0))
+        majorVersion=$latestVer | cut -d '.' -f 1 | cut -d 'v' -f 2
+        minorVersion=$latestVer | cut -d '.' -f 2
+        hotFixrVersion=$latestVer | cut -d '.' -f 3
+        echo $latestVer
+        echo $majorVersion
+        echo $minorVersion
+        newVersion="v$majorversion.$mionrVersion.$hotFixVersion"
+        echo $newVersion
+    
+    - name: Assign New Tag
+      run: |  
+        # git tag $newVersion
+        # git push --tags
