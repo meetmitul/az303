@@ -21,7 +21,7 @@ jobs:
     - name: Echo New Tag
       id: idNewTag
       run: |
-        git fetch --tags
+        git pull --tags
         latestVersion=$(git describe --tags --always --abbrev=0 --match v*.*.*)
         majorVersion=`echo $latestVersion | cut -d '.' -f 1 | cut -d 'v' -f 2`
         minorVersion=`echo $latestVersion | cut -d '.' -f 2`
