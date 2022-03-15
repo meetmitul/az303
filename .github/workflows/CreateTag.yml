@@ -13,12 +13,12 @@ jobs:
     outputs:
       newTagName: ${{ steps.idNewTag.outputs.TAG_NAME }}
     steps:
+    - id: idNewTag
     # Checkout the repo
     - uses: actions/checkout@v2
       with:
         fetch-depth: 20
     - name: Echo New Tag
-      id: idNewTag
       run: |
         git fetch --tags
         latestVersion=$(git describe --tags --always --abbrev=0 --match v*.*.*)
@@ -40,4 +40,4 @@ jobs:
     needs: CreateNewTag
     uses: meetmitul/az303/.github/workflows/createrelease.yml@master
     with:
-      TagName: "v3.5.0" #${{ needs.CreateNewTag.steps.idNewTag.outputs.newTagName}}
+      TagName: ${{ needs.CreateNewTag.steps.idNewTag.outputs.newTagName}}
