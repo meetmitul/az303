@@ -16,7 +16,8 @@ jobs:
     
     - name: Echo New Tag
       run: |
-        latestVer=$((git describe --tags --abbrev=0))
+        DESCRIBE=`git describe --tags --abbrev=0`
+        latestver=`echo $DESCRIBE`
         majorVersion=$latestVer | cut -d '.' -f 1 | cut -d 'v' -f 2
         minorVersion=$latestVer | cut -d '.' -f 2
         hotFixrVersion=$latestVer | cut -d '.' -f 3
@@ -25,7 +26,7 @@ jobs:
         echo $minorVersion
         newVersion="v$majorversion.$((mionrVersion + 1)).$hotFixVersion"
         echo $newVersion
-    - name: Assign New Tag
-      run: |  
+        echo "Assign New Tag"
+        echo $newVersion
         git tag $newVersion
         git push --tags
