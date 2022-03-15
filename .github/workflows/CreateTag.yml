@@ -20,14 +20,14 @@ jobs:
       run: |
         git fetch --tags
         git describe --tags --always --abbrev=0
-        latestver=$(git describe --tags --always --abbrev=1)
-        majorVersion=$latestVer | cut -d '.' -f 1 | cut -d 'v' -f 2
-        minorVersion=$latestVer | cut -d '.' -f 2
-        hotFixrVersion=$latestVer | cut -d '.' -f 3
-        echo $latestVer
+        latestVersion=$(git describe --tags --always --abbrev=0)
+        majorVersion=$latestVersion | cut -d '.' -f 1 | cut -d 'v' -f 2
+        minorVersion=$latestVersion | cut -d '.' -f 2
+        hotFixrVersion=$latestVersion | cut -d '.' -f 3
+        echo $latestVersion
         echo $majorVersion
         echo $minorVersion
-        newVersion="v$majorversion.$((mionrVersion + 1)).$hotFixVersion"
+        newVersion="v$majorVersion.$((mionrVersion + 1)).$hotFixVersion"
         echo $newVersion
         echo "Assign New Tag"
         echo $newVersion
