@@ -35,7 +35,7 @@ jobs:
         git tag $newVersion
         git push --tags
         echo New tag pushed to repository
-        echo "::set-output name=TAG_NAME::$newVersion"
+        echo "::set-output name=TAG_NAME::v3.6.0"
       
   CreateNewRelease:
     needs: CreateNewTag
