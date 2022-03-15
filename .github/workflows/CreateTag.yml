@@ -18,8 +18,8 @@ jobs:
 
     - name: Echo New Tag
       run: |
-        git describe --tags --always --abbrev=0
-        latestver=$(git describe --tags --always --abbrev=0)
+        git describe --tags --always --abbrev=1
+        latestver=$(git describe --tags --always --abbrev=1)
         majorVersion=$latestVer | cut -d '.' -f 1 | cut -d 'v' -f 2
         minorVersion=$latestVer | cut -d '.' -f 2
         hotFixrVersion=$latestVer | cut -d '.' -f 3
