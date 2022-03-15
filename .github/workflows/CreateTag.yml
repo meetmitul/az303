@@ -25,10 +25,7 @@ jobs:
         echo $minorVersion
         newVersion="v$majorversion.$((mionrVersion + 1)).$hotFixVersion"
         echo $newVersion
-        newVersion="v1.5"
-        echo $newVersion
     - name: Assign New Tag
       run: |  
-        newVersion="v1.5.1"
         git tag $newVersion
         git push --tags
