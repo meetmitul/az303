@@ -35,8 +35,7 @@ jobs:
         echo New tag pushed to repository
         echo ::set-output name=TAG_NAME::$newVersion
 
-  CreateRelease:
-    uses: meetmitul/az303/.github/workflows/createrelease.yml@master
-    needs: CreateNewTag
-    with:
-      TagName: ${{ steps.idNewTag.outputs.TAG_NAME}}
+    - name: Create Release
+      uses: meetmitul/az303/.github/workflows/createrelease.yml@master
+      with:
+        TagName: ${{ steps.idNewTag.outputs.TAG_NAME}}
