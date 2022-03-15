@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # Checkout the repo
-    - uses: actions/checkout@v3 
-    
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
     - name: Echo New Tag
       run: |
-        latestver=$(git describe --tags)
+        latestver=$(git describe --tags --abbrev=0)
         majorVersion=$latestVer | cut -d '.' -f 1 | cut -d 'v' -f 2
         minorVersion=$latestVer | cut -d '.' -f 2
         hotFixrVersion=$latestVer | cut -d '.' -f 3
