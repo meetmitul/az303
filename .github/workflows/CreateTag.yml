@@ -40,5 +40,3 @@ jobs:
     needs: CreateNewTag
     with:
       TagName: ${{ steps.idNewTag.outputs.TAG_NAME}}
-    secrets:
-      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
