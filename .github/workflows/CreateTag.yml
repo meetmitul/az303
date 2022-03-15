@@ -10,6 +10,8 @@ on:
 jobs:
   CreateNewTag:
     runs-on: ubuntu-latest
+    outputs:
+      newTagName: ${{ steps.idNewTag.outputs.TAG_NAME }}
     steps:
     # Checkout the repo
     - uses: actions/checkout@v2
@@ -33,9 +35,9 @@ jobs:
         git push --tags
         echo New tag pushed to repository
         echo ::set-output name=TAG_NAME::$newVersion
-
+      
   CreateNewRelease:
     needs: CreateNewTag
     uses: meetmitul/az303/.github/workflows/createrelease.yml@master
     with:
-      TagName: ${{ needs.CreateNewTag.steps.idNewTag.outputs.TAG_NAME}}
+      TagName: ${{ needs.CreateNewTag.steps.idNewTag.outputs.newTagName}}
