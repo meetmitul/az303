@@ -22,11 +22,12 @@ jobs:
         latestVersion=$(git describe --tags --always --abbrev=0)
         majorVersion=`echo $latestVersion | cut -d '.' -f 1 | cut -d 'v' -f 2`
         minorVersion=`echo $latestVersion | cut -d '.' -f 2`
-        hotFixrVersion=`echo $latestVersion | cut -d '.' -f 3`
+        hotFixVersion=`echo $latestVersion | cut -d '.' -f 3`
         echo $latestVersion
         echo $majorVersion
         echo $minorVersion
-        newVersion="v$majorVersion.$((mionrVersion + 1)).$hotFixVersion"
+        echo $hotFixVersion
+        newVersion="v$majorVersion.$((minorVersion + 1)).0"
         echo $newVersion
         echo "Assign New Tag"
         echo $newVersion
