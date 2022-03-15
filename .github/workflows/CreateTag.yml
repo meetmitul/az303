@@ -35,9 +35,7 @@ jobs:
         echo ::set-output name=TAG_NAME::$newVersion
 
   CreateNewRelease:
-    runs-on: ubuntu-latest
     needs: CreateNewTag
-    steps: 
-      - uses: meetmitul/az303/.github/workflows/createrelease.yml@master
-        with:
-          TagName: ${{ needs.CreateNewTag.steps.idNewTag.outputs.TAG_NAME}}
+    uses: meetmitul/az303/.github/workflows/createrelease.yml@master
+    with:
+      TagName: ${{ needs.CreateNewTag.steps.idNewTag.outputs.TAG_NAME}}
