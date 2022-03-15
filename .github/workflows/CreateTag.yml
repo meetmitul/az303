@@ -8,7 +8,7 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  ApplyNewTag:
+  CreateNewTag:
     runs-on: ubuntu-latest
     steps:
     # Checkout the repo
@@ -17,6 +17,7 @@ jobs:
         fetch-depth: 20
 
     - name: Echo New Tag
+      id: idNewTag
       run: |
         git fetch --tags
         latestVersion=$(git describe --tags --always --abbrev=0 --match v*.*.*)
@@ -32,3 +33,12 @@ jobs:
         git tag $newVersion
         git push --tags
         echo New tag pushed to repository
+        echo ::set-output name=TAG_NAME::$newVersion
+
+  CreateRelease:
+    uses: meetmitul/az303/.github/workflows/createrelease.yml@master
+    needs: CreateNewTag
+    with:
+      TagName: ${{ steps.idNewTag.outputs.TAG_NAME}}
+    secrets:
+      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
