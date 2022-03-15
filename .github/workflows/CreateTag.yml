@@ -23,13 +23,12 @@ jobs:
         majorVersion=`echo $latestVersion | cut -d '.' -f 1 | cut -d 'v' -f 2`
         minorVersion=`echo $latestVersion | cut -d '.' -f 2`
         hotFixVersion=`echo $latestVersion | cut -d '.' -f 3`
-        echo $latestVersion
-        echo $majorVersion
-        echo $minorVersion
-        echo $hotFixVersion
+        echo Latest Version : $latestVersion
+        echo Major Version : $majorVersion
+        echo Minor Version : $minorVersion
+        echo Hotfix Version : $hotFixVersion
         newVersion="v$majorVersion.$((minorVersion + 1)).0"
-        echo $newVersion
-        echo "Assign New Tag"
-        echo $newVersion
+        echo New Version : $newVersion
         git tag $newVersion
         git push --tags
+        echo New tag pushed to repository
