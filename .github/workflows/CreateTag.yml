@@ -5,11 +5,15 @@ name: Create Tag
 # Controls when the workflow will run
 on:
   pull_request:
+    types:
+      - closed
+
   #workflow_dispatch:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   CreateNewTag:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
       newTagName: ${{ steps.idNewTag.outputs.TAG_NAME }}
@@ -39,6 +43,7 @@ jobs:
         echo "::set-output name=TAG_NAME::$newVersion"
   
   CreateNewRelease:
+    if: github.event.pull_request.merged == true
     needs: CreateNewTag
     uses: meetmitul/az303/.github/workflows/createrelease.yml@master
     with:
