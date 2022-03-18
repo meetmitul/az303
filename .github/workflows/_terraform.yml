@@ -14,7 +14,7 @@ jobs:
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{secrets.AZURE_CREDENTIALS}}
-        subscription-id: "bacff720-add4-4982-b1d1-edddd7173688"
+        #subscription-id: "bacff720-add4-4982-b1d1-edddd7173688"
 
     - name: Checkout
       uses: actions/checkout@v2
