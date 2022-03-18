@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install Terraform
-      working-directory: application/terraform
+      working-directory: Application/Terraform/
       run: |
           pwd
           ls
