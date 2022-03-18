@@ -2,10 +2,12 @@ name: 'Terraform'
 
 on:
   workflow_dispatch:
+
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
+    environment: systest
     steps:
     - name: Azure Login
       uses: Azure/login@v1.4.3
@@ -13,7 +15,6 @@ jobs:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{secrets.AZURE_CREDENTIALS}}
         subscription-id: "bacff720-add4-4982-b1d1-edddd7173688"
-        Environment: SysTest
 
     - name: Checkout
       uses: actions/checkout@v2
