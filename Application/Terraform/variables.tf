@@ -7,12 +7,13 @@ variable "location" {
 
 variable "subscriptionid" {
     type=string
-    default = "e86103bf-c95b-4ca8-a88a-234a0d6c2bb4"
+#    default = "e86103bf-c95b-4ca8-a88a-234a0d6c2bb4"
+    default= "bacff720-add4-4982-b1d1-edddd7173688"
 }
 
-variable "resource_group_name" {
+variable "Environment" {
     type = string
-    description = "Please provide name of the resource group for the new timesheet test environment"
+    description = "Please provide name of the environment i.e., test,uat,prod etc."
 
     # validation {
     #     # regex(...) fails if it cannot find a match
