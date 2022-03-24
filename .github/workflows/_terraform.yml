@@ -7,8 +7,17 @@ on:
         required: true
         type: string
     secrets:
-      az_credentials:
+      AZURE_CREDENTIALS:
         required: true
+      AZURE_TENANTID:
+        required: true
+      AZURE_CLIENTID:
+        required: true
+      AZURE_CLIENTSECRET:
+        required: true
+      AZURE_SUBSCRIPTIONID:
+        required: true
+        
         
 jobs:
   terraform:
