@@ -6,6 +6,9 @@ on:
       Environment:
         required: true
         type: string
+    secrets:
+      az_credentials:
+        required: true
         
 jobs:
   terraform:
@@ -18,7 +21,7 @@ jobs:
       uses: Azure/login@v1.4.3
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        creds: ${{secrets.az_credentials}}
  #       subscription-id: ${{secrets.AZ_SUBSCRIPTIONID}}
  #       enable-AzPSSession: true
 
