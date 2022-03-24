@@ -18,10 +18,17 @@ terraform {
   required_version = ">= 1.1.6"
 }
 
+locals {
+    environment = terraform.workspace
+    location = "australiasoutheast"
+}
 provider "azurerm" {
   features {}
 
-  subscription_id = var.subscriptionid
+  # subscription_id = var.subscription_id
+#   client_id       = var.client_id
+#   client_secret   = var.client_secret
+#   tenant_id       = var.tenant_id
 }
 
 #module "network" {
@@ -32,28 +39,31 @@ provider "azurerm" {
 
 
 resource "azurerm_resource_group" "rg_cicdpoc" {
-  name     = "rg-cicdpoc-${var.Environment}"
-  location = var.location
-}
-
-resource "azurerm_app_service_plan" "cicd_appplan" {
-  name                = "plan-cicdpoc-${var.Environment}"
-  location            = azurerm_resource_group.rg_cicdpoc.location
-  resource_group_name = azurerm_resource_group.rg_cicdpoc.name
-
-  sku {
-    tier = "Standard"
-    size = "S1"
+  name     = "rg-cicdpoc-${local.environment}"
+  location = local.location
+  tags = {
+    "Environment" = local.environment
   }
 }
 
-resource "azurerm_app_service" "cicd_app" {
-  name                = "example-app-service"
-  location            = azurerm_resource_group.rg_cicdpoc.location
-  resource_group_name = azurerm_resource_group.rg_cicdpoc.name
-  app_service_plan_id = azurerm_app_service_plan.cicd_appplan.id
+# resource "azurerm_app_service_plan" "cicd_appplan" {
+#   name                = "plan-cicdpoc-${local.environment}"
+#   location            = azurerm_resource_group.rg_cicdpoc.location
+#   resource_group_name = azurerm_resource_group.rg_cicdpoc.name
 
-  site_config {
-    dotnet_framework_version = "v4.0"
-  }
-}
+#   sku {
+#     tier = "Standard"
+#     size = "S1"
+#   }
+# }
+
+# resource "azurerm_app_service" "cicd_app" {
+#   name                = "example-app-service-${local.environment}"
+#   location            = azurerm_resource_group.rg_cicdpoc.location
+#   resource_group_name = azurerm_resource_group.rg_cicdpoc.name
+#   app_service_plan_id = azurerm_app_service_plan.cicd_appplan.id
+
+#   site_config {
+#     dotnet_framework_version = "v4.0"
+#   }
+# }
