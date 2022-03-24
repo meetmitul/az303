@@ -7,7 +7,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: Adhoc
+    environment: SystemTest
     steps:
  #   - name: Azure Login
 #      uses: Azure/login@v1.4.3
