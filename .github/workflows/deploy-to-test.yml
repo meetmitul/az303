@@ -3,14 +3,12 @@ on:
   workflow_dispatch:
   
 jobs:
-  build:
-    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
+#  build:
+#    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
     
   deployToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
-    needs: build
+    #needs: build
     with:
-      Title: SysTest
-      Environment: SysTest
-    secrets:
-      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      Environment: SystemTest
+      
