@@ -1,17 +1,17 @@
-name: 'Terraform'
+name: 'Base Terraform'
 
 on:
-  workflow_dispatch:
-
-env:
-  name: SystemTest
-
+  workflow_call:
+    inputs:
+      Environment:
+        required: true
+        type: string  
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: 
-      name: $env.name
+      name: ${{inputs.Environment}}
     steps:
  #   - name: Azure Login
 #      uses: Azure/login@v1.4.3
@@ -27,7 +27,7 @@ jobs:
     - name: Install Terraform
       working-directory: Application/Terraform/
       run: |
-          echo "Enviornment is ${{env.name}}"
+          echo "Enviornment is ${{inputs.Environment}}"
           pwd
           ls
           sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
@@ -39,8 +39,8 @@ jobs:
           export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
           terraform init
-          terraform workspace add ${{env.name}}
-          terraform workspace select ${{env.name}}
-          terraform plan -auto-approve -var-file=${{env.name}}.tfvars
-          terraform apply -auto-approve -var-file=${{env.name}}.tfvars
+          terraform workspace add ${{inputs.Environment}}
+          terraform workspace select ${{inputs.Environment}}
+          terraform plan -auto-approve -var-file=${{inputs.Environment}}.tfvars
+          terraform apply -auto-approve -var-file=${{inputs.Environment}}.tfvars
           
