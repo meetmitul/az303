@@ -17,8 +17,8 @@ jobs:
 #        subscription-id: ${{secrets.AZ_SUBSCRIPTIONID}}
  #       enable-AzPSSession: true
 
- #   - name: Checkout
- #     uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     
     - name: Install Terraform
       working-directory: Application/Terraform/
