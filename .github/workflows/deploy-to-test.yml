@@ -7,7 +7,7 @@ jobs:
 #    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
     
   deployToTest:
-    uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
+    uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #needs: build
     with:
       Environment: SystemTest
