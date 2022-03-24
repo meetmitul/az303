@@ -13,12 +13,12 @@ jobs:
     environment: 
       name: ${{inputs.Environment}}
     steps:
- #   - name: Azure Login
-#      uses: Azure/login@v1.4.3
-#      with:
-#        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-#        creds: ${{secrets.AZURE_CREDENTIALS}}
-#        subscription-id: ${{secrets.AZ_SUBSCRIPTIONID}}
+    - name: Azure Login
+      uses: Azure/login@v1.4.3
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+ #       subscription-id: ${{secrets.AZ_SUBSCRIPTIONID}}
  #       enable-AzPSSession: true
 
     - name: Checkout
