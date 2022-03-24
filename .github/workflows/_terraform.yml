@@ -10,7 +10,8 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: ${env.name}
+    environment: 
+      name: ${{env.name}}
     steps:
  #   - name: Azure Login
 #      uses: Azure/login@v1.4.3
