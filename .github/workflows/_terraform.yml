@@ -10,7 +10,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: $env.name
+    environment: ${env.name}
     steps:
  #   - name: Azure Login
 #      uses: Azure/login@v1.4.3
@@ -37,9 +37,9 @@ jobs:
           export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
           export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
+          terraform init
           terraform workspace add ${{env.name}}
           terraform workspace select ${{env.name}}
-          terraform init
           terraform plan -auto-approve -var-file=${{env.name}}.tfvars
           terraform apply -auto-approve -var-file=${{env.name}}.tfvars
           
