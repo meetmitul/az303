@@ -30,7 +30,7 @@ jobs:
       uses: Azure/login@v1.4.3
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        creds: ${{secrets.az_credentials}}
+        creds: ${{secrets.AZURE_CREDENTIALS}}
  #       subscription-id: ${{secrets.AZ_SUBSCRIPTIONID}}
  #       enable-AzPSSession: true
 
@@ -47,10 +47,10 @@ jobs:
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform
-          export ARM_CLIENT_ID=${{secrets.AZ_CLIENTID}}
-          export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
-          export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
-          export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
+          export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
+          export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
+          export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
+          export ARM_TENANT_ID=${{secrets.AZURS_TENANTID}}
           terraform init
           terraform workspace add ${{inputs.Environment}}
           terraform workspace select ${{inputs.Environment}}
