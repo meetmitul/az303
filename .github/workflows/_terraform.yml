@@ -3,11 +3,14 @@ name: 'Terraform'
 on:
   workflow_dispatch:
 
+env:
+  name: SystemTest
+
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: SystemTest
+    environment: ${{env.name}}
     steps:
  #   - name: Azure Login
 #      uses: Azure/login@v1.4.3
@@ -23,7 +26,7 @@ jobs:
     - name: Install Terraform
       working-directory: Application/Terraform/
       run: |
-          echo "Enviornment is $GITHUB_ENV"
+          echo "Enviornment is ${{env.name}}"
           pwd
           ls
           sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
@@ -34,9 +37,9 @@ jobs:
           export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
           export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
-          terraform workspace add $GITHUB_ENV
-          terraform workspace select $GITHUB_ENV
+          terraform workspace add ${{env.name}}
+          terraform workspace select ${{env.name}}
           terraform init
-          terraform plan -auto-approve -var-file=$GITHUB_ENV.tfvars
-          terraform apply -auto-approve -var-file=$GITHUB_ENV.tfvars
+          terraform plan -auto-approve -var-file=${{env.name}}.tfvars
+          terraform apply -auto-approve -var-file=${{env.name}}.tfvars
           
