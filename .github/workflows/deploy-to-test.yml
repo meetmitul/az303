@@ -11,4 +11,6 @@ jobs:
     #needs: build
     with:
       Environment: SystemTest
+    secrets:
+      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
       
