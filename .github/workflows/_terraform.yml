@@ -1,4 +1,4 @@
-name: 'Base Terraform'
+name: 'Base Terraform Deploy'
 
 on:
   workflow_call:
