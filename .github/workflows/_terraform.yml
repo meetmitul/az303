@@ -36,6 +36,7 @@ jobs:
 
     environment: 
       name: ${{inputs.Environment}}
+      url: ${{ steps.terraformStep.outputs.AppURL }}
     steps:
     - name: Azure Login
       uses: Azure/login@v1.4.3
