@@ -9,13 +9,13 @@ on:
     secrets:
       AZURE_CREDENTIALS:
         required: true
-      AZURE_TENANTID:
+      AZ_TENANTID:
         required: true
-      AZURE_CLIENTID:
+      AZ_CLIENTID:
         required: true
-      AZURE_CLIENTSECRET:
+      AZ_CLIENTSECRET:
         required: true
-      AZURE_SUBSCRIPTIONID:
+      AZ_SUBSCRIPTIONID:
         required: true
         
         
@@ -32,7 +32,7 @@ jobs:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{secrets.AZURE_CREDENTIALS}}
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}}
-        enable-AzPSSession: true
+      #  enable-AzPSSession: true
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -47,10 +47,10 @@ jobs:
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform
-          export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
-          export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
-          export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
-          export ARM_TENANT_ID=${{secrets.AZURS_TENANTID}}
+          export ARM_CLIENT_ID=${{secrets.AZ_CLIENTID}}
+          export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
+          export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
+          export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
           terraform init
           terraform workspace add ${{inputs.Environment}}
           terraform workspace select ${{inputs.Environment}}
