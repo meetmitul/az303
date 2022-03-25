@@ -17,12 +17,23 @@ on:
         required: true
       AZURE_SUBSCRIPTIONID:
         required: true
-        
+    outputs:
+      AppURL:
+        description: "Application URL"
+        value: ${{ jobs.terraform.outputs.output1 }}
+      AppName:
+        description: "Application Name"
+        value: ${{ jobs.terraform.outputs.output2 }}
+
         
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
+    outputs:
+      AppName: ${{ steps.terraformStep.outputs.AppName }}
+      AppURL: ${{ steps.terraformStep.outputs.AppURL }}
+
     environment: 
       name: ${{inputs.Environment}}
     steps:
@@ -38,6 +49,7 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Install Terraform
+      id: terraformStep
       working-directory: Application/Terraform/
       run: |
           echo "Enviornment is ${{inputs.Environment}}"
@@ -56,4 +68,8 @@ jobs:
           terraform workspace select ${{inputs.Environment}}
           terraform plan -var-file=${{inputs.Environment}}.tfvars
           terraform apply -auto-approve -var-file=${{inputs.Environment}}.tfvars
-          
+          AppURL = `terraform output ApplicationURL`
+          AppName = `terraform output ApplicationName`
+          echo "::set-output name=AppURL::$AppURL"
+          echo "::set-output name=AppName::$AppName"
+          echo "::set-output name=AppURL::${}"
