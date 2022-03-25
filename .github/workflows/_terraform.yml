@@ -31,8 +31,8 @@ jobs:
     name: 'Terraform'
     runs-on: ubuntu-latest
     outputs:
-      AppName: ${{ steps.terraformStep.outputs.AppName }}
-      AppURL: ${{ steps.terraformStep.outputs.AppURL }}
+      AppName: ${{ steps.terraformStep.outputs.APP_NAME }}
+      AppURL: ${{ steps.terraformStep.outputs.APP_URL }}
 
     environment: 
       name: ${{inputs.Environment}}
@@ -69,8 +69,9 @@ jobs:
           terraform workspace select ${{inputs.Environment}}
           terraform plan -var-file=${{inputs.Environment}}.tfvars
           terraform apply -auto-approve -var-file=${{inputs.Environment}}.tfvars
-          AppURL = `terraform output ApplicationURL`
-          AppName = `terraform output ApplicationName`
-          echo "::set-output name=AppURL::$AppURL"
-          echo "::set-output name=AppName::$AppName"
-          echo "::set-output name=AppURL::${}"
+          AppURL = $(terraform output ApplicationURL)
+          AppName = $(terraform output ApplicationName)
+          echo App URL $AppURL
+          echo App Name $AppName
+          echo "::set-output name=APP_URL::$AppURL"
+          echo "::set-output name=APP_NAME::$AppName"
