@@ -13,8 +13,8 @@ jobs:
       Environment: SystemTest
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-      AZURE_TENANTID: ${{ secrets.AZURE_TENANTID }}
-      AZURE_CLIENTID: ${{ secrets.AZURE_CLIENTID }}
-      AZURE_CLIENTSECRET: ${{ secrets.AZURE_CLIENTSECRET }}
-      AZURE_SUBSCRIPTIONID: ${{ secrets.AZURE_SUBSCRIPTIONID }}
+      AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
+      AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
+      AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
+      AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
       
