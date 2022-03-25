@@ -21,14 +21,11 @@ terraform {
 locals {
     environment = terraform.workspace
     location = "australiasoutheast"
+    AppName = "cicd-demo"
 }
+
 provider "azurerm" {
   features {}
-
-  # subscription_id = var.subscription_id
-#   client_id       = var.client_id
-#   client_secret   = var.client_secret
-#   tenant_id       = var.tenant_id
 }
 
 #module "network" {
@@ -39,31 +36,31 @@ provider "azurerm" {
 
 
 resource "azurerm_resource_group" "rg_cicdpoc" {
-  name     = "rg-cicdpoc-${local.environment}"
+  name     = "rg-${local.AppName}-${local.environment}"
   location = local.location
   tags = {
     "Environment" = local.environment
   }
 }
 
-# resource "azurerm_app_service_plan" "cicd_appplan" {
-#   name                = "plan-cicdpoc-${local.environment}"
-#   location            = azurerm_resource_group.rg_cicdpoc.location
-#   resource_group_name = azurerm_resource_group.rg_cicdpoc.name
+resource "azurerm_app_service_plan" "cicd_appplan" {
+  name                = "plan-${local.AppName}-${local.environment}"
+  location            = azurerm_resource_group.rg_cicdpoc.location
+  resource_group_name = azurerm_resource_group.rg_cicdpoc.name
 
-#   sku {
-#     tier = "Standard"
-#     size = "S1"
-#   }
-# }
+  sku {
+    tier = "Free"
+    size = "F1"
+  }
+}
 
-# resource "azurerm_app_service" "cicd_app" {
-#   name                = "example-app-service-${local.environment}"
-#   location            = azurerm_resource_group.rg_cicdpoc.location
-#   resource_group_name = azurerm_resource_group.rg_cicdpoc.name
-#   app_service_plan_id = azurerm_app_service_plan.cicd_appplan.id
+resource "azurerm_app_service" "cicd_app" {
+  name                = "app-${local.AppName}-${local.environment}"
+  location            = azurerm_resource_group.rg_cicdpoc.location
+  resource_group_name = azurerm_resource_group.rg_cicdpoc.name
+  app_service_plan_id = azurerm_app_service_plan.cicd_appplan.id
 
-#   site_config {
-#     dotnet_framework_version = "v4.0"
-#   }
-# }
+  site_config {
+    dotnet_framework_version = "v4.0"
+  }
+}
