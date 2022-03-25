@@ -54,6 +54,6 @@ jobs:
           terraform init
           terraform workspace add ${{inputs.Environment}}
           terraform workspace select ${{inputs.Environment}}
-          terraform plan -auto-approve -var-file=${{inputs.Environment}}.tfvars
+          terraform plan -var-file=${{inputs.Environment}}.tfvars
           terraform apply -auto-approve -var-file=${{inputs.Environment}}.tfvars
           
