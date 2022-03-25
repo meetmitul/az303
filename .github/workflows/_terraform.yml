@@ -36,7 +36,7 @@ jobs:
 
     environment: 
       name: ${{inputs.Environment}}
-      url: ${{ steps.terraformStep.outputs.AppURL }}
+      url: ${{ steps.terraformStep.outputs.APP_URL }}
     steps:
     - name: Azure Login
       uses: Azure/login@v1.4.3
@@ -69,9 +69,9 @@ jobs:
           terraform workspace select ${{inputs.Environment}}
           terraform plan -var-file=${{inputs.Environment}}.tfvars
           terraform apply -auto-approve -var-file=${{inputs.Environment}}.tfvars
-          AppURL = $(terraform output ApplicationURL)
-          AppName = $(terraform output ApplicationName)
+          APP_URL=$(terraform output ApplicationURL)
+          APP_NAME=$(terraform output ApplicationName)
           echo App URL $AppURL
           echo App Name $AppName
-          echo "::set-output name=APP_URL::$AppURL"
-          echo "::set-output name=APP_NAME::$AppName"
+          echo "::set-output name=APP_URL::$APP_URL"
+          echo "::set-output name=APP_NAME::$APP_NAME"
