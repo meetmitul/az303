@@ -62,5 +62,6 @@ resource "azurerm_app_service" "cicd_app" {
 
   site_config {
     dotnet_framework_version = "v4.0"
+    use_32_bit_worker_process = true
   }
 }
