@@ -71,7 +71,7 @@ jobs:
           terraform apply -auto-approve -var-file=${{inputs.Environment}}.tfvars
           APP_URL=$(terraform output ApplicationURL)
           APP_NAME=$(terraform output ApplicationName)
-          echo App URL $AppURL
-          echo App Name $AppName
+          echo App URL $APP_URL
+          echo App Name $APP_NAME
           echo "::set-output name=APP_URL::$APP_URL"
           echo "::set-output name=APP_NAME::$APP_NAME"
