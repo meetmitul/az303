@@ -47,8 +47,8 @@ jobs:
     with:
       Title: System Test
       Environment: SystemTest
-      #AppName: ${{needs.DeployInfraToTest.outputs.AppName}}
-      AppName: ${{needs.RecreateWebAppName.outputs.AppName}}
+      AppName: ${{needs.DeployInfraToTest.outputs.AppName}}
+      #AppName: ${{needs.RecreateWebAppName.outputs.AppName}}
       AppURL: ${{needs.DeployInfraToTest.outputs.AppName}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
