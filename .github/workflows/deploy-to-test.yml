@@ -32,6 +32,7 @@ jobs:
 
   DeployApplicationToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
+    if: false
     needs: 
       - BuildApplication
       - DeployInfraToTest
@@ -39,7 +40,7 @@ jobs:
       Title: System Test
       Environment: SystemTest
       #AppName: "app-cicd-demo-SystemTest" #${{env.AppName}} #app-cicd-demo-SystemTest # ${{needs.DeployInfraToTest.outputs.AppName}}
-      AppName: "${{env.AppName}}"
+      #AppName: ${{env.AppName}}
       #AppURL:  ${{ needs.DeployInfraToTest.outputs.AppURL }}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
