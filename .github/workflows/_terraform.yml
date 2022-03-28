@@ -20,10 +20,10 @@ on:
     outputs:
       AppURL:
         description: "Application URL"
-        value: ${{ jobs.terraform.outputs.output1 }}
+        value: ${{ jobs.terraform.outputs.AppURL }}
       AppName:
         description: "Application Name"
-        value: ${{ jobs.terraform.outputs.output2 }}
+        value: ${{ jobs.terraform.outputs.AppName }}
 
         
 jobs:
@@ -73,5 +73,5 @@ jobs:
           APP_NAME=$(terraform output ApplicationName)
           echo App URL $APP_URL
           echo App Name $APP_NAME
-          echo "::set-output name=AppUrl::$APP_URL"
+          echo "::set-output name=AppURL::$APP_URL"
           echo "::set-output name=AppName::$APP_NAME"
