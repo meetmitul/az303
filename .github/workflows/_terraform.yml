@@ -6,17 +6,17 @@ on:
       Environment:
         required: true
         type: string
-#    secrets:
-#      AZURE_CREDENTIALS:
-#        required: true
-#      AZURE_TENANTID:
-#        required: true
-#      AZURE_CLIENTID:
-#        required: true
-#     AZURE_CLIENTSECRET:
-#        required: true
-#      AZURE_SUBSCRIPTIONID:
-#        required: true
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      AZURE_TENANTID:
+        required: true
+      AZURE_CLIENTID:
+        required: true
+      AZURE_CLIENTSECRET:
+        required: true
+      AZURE_SUBSCRIPTIONID:
+        required: true
     outputs:
       AppURL:
         description: "Application URL"
