@@ -8,7 +8,7 @@ env:
 jobs:          
   DeployInfraToTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
-    if: $RunInfra==true
+    if: env.RunInfra==true
     #needs: build
     with:
       Environment: SystemTest
