@@ -23,6 +23,8 @@ jobs:
   RecreateWebAppName:
     runs-on: ubuntu-latest
     needs: DeployInfraToTest
+    outputs:
+      AppName: ${{steps.replaceVariable.AppName}}
     env:
       AppName: xxxx
     steps:
@@ -32,6 +34,7 @@ jobs:
           echo  ${{needs.DeployInfraToTest.outputs.AppName}}
           $AppName=${{needs.DeployInfraToTest.outputs.AppName}}
           echo $AppName
+          echo "::set-output name=AppName::$AppName"
           
   DeployApplicationToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
@@ -43,7 +46,7 @@ jobs:
       Title: System Test
       Environment: SystemTest
       #AppName: ${{needs.DeployInfraToTest.outputs.AppName}}
-      AppName: ${{jobs.RecreateWebAppName.steps.replaceVariable.AppName}}
+      AppName: ${{needs.RecreateWebAppName.outputs.AppName}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
