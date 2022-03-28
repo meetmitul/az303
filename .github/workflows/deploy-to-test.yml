@@ -3,21 +3,19 @@ on:
   workflow_dispatch:
   
 jobs:
-#  build:
-#    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
     
-#  DeployInfraToTest:
-#    uses: meetmitul/az303/.github/workflows/_terraform.yml@master
-#    #needs: build
-#    with:
-#      Environment: SystemTest
+  DeployInfraToTest:
+    uses: meetmitul/az303/.github/workflows/_terraform.yml@master
+    #needs: build
+    with:
+      Environment: SystemTest
 
-#    secrets:
-#      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-#      AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
-#      AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
-#      AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
-#      AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
+      AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
+      AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
+      AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
   
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
@@ -26,12 +24,12 @@ jobs:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
     needs: 
       - BuildApplication
- #     - DeployInfraToTest
+      - DeployInfraToTest
     with:
       Title: System Test
       Environment: SystemTest
-      AppName: app-cicd-demo-SystemTest # ${{ needs.DeployInfraToTest.outputs.AppName }}
-      AppURL: app-cicd-demo-SystemTest.azurewebsites.net # ${{ needs.DeployInfraToTest.outputs.AppURL }}
+      AppName: ${{ needs.DeployInfraToTest.outputs.AppName }}
+      AppURL:  ${{ needs.DeployInfraToTest.outputs.AppURL }}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
