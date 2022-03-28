@@ -5,8 +5,7 @@ on:
 jobs:          
   DeployInfraToTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
-    if: ${{ true==false }}
-    #needs: build
+    #if: ${{ true==false }}
     with:
       Environment: SystemTest
 
