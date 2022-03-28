@@ -24,11 +24,13 @@ jobs:
     
   DeployApplicationToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
-    needs: BuildApplication
+    needs: 
+      - BuildApplication
+      - DeployInfraToTest
     with:
       Title: System Test
       Environment: SystemTest
-      ApplicationName: needs.DeployInfraToTest.outputs.AppName
+      AppName: needs.DeployInfraToTest.outputs.AppName
     secrets:
       az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
     
