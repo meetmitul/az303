@@ -3,10 +3,12 @@ on:
   workflow_dispatch:
 env:
   AppName: app-cicd-demo-SystemTest #${{jobs.DeployInfraToTest.outputs.AppName}}  
+  RunInfra: false
 
 jobs:          
   DeployInfraToTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
+    if: ${{ env.RunInfra }}
     #needs: build
     with:
       Environment: SystemTest
@@ -37,8 +39,8 @@ jobs:
       Title: System Test
       Environment: SystemTest
       #AppName: "app-cicd-demo-SystemTest" #${{env.AppName}} #app-cicd-demo-SystemTest # ${{needs.DeployInfraToTest.outputs.AppName}}
-      AppName: "${{needs.DeployInfraToTest.outputs.AppName}}"
-      AppURL:  ${{ needs.DeployInfraToTest.outputs.AppURL }}
+      AppName: "${{env.AppName}}"
+      #AppURL:  ${{ needs.DeployInfraToTest.outputs.AppURL }}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
