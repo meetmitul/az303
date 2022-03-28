@@ -21,12 +21,12 @@ jobs:
   
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
-  EchoEnv:
-    runs-on: ubuntu
-    steps:
-      - name: step1
-        run: |
-          echo environment variable is $AppName 
+#  EchoEnv:
+#    runs-on: ubuntu
+#    steps:
+#      - name: step1
+#        run: |
+#          echo environment variable is $AppName 
         
 
 
