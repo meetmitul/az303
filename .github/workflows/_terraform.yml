@@ -73,5 +73,5 @@ jobs:
           APP_NAME=$(terraform output ApplicationName)
           echo App URL $APP_URL
           echo App Name $APP_NAME
-          echo "::set-output name=AppURL::$APP_URL"
-          echo "::set-output name=AppName::$APP_NAME"
+          echo "::set-output name=APP_URL::$APP_URL"
+          echo "::set-output name=APP_Name::$APP_NAME"
