@@ -30,7 +30,7 @@ jobs:
     with:
       Title: System Test
       Environment: SystemTest
-      AppName: needs.DeployInfraToTest.outputs.AppName
+      AppName: ${{ needs.DeployInfraToTest.outputs.AppName }}
     secrets:
       az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
     
