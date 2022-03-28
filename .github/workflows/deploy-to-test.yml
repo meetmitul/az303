@@ -12,12 +12,12 @@ jobs:
     with:
       Environment: SystemTest
 
-    secrets:
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-      AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
-      AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
-      AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
-      AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
+    #secrets:
+    #  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+    #  AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
+    #  AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
+    #  AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
+    #  AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
   
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
@@ -32,6 +32,6 @@ jobs:
       Environment: SystemTest
       AppName: ${{ needs.DeployInfraToTest.outputs.AppName }}
       AppURL: ${{ needs.DeployInfraToTest.outputs.AppURL }}
-    secrets:
-      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+    #secrets:
+    #  az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
     
