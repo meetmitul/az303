@@ -6,7 +6,7 @@ jobs:
 #  build:
 #    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
     
-  deployToTest:
+  DeployInfraToTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #needs: build
     with:
@@ -18,4 +18,17 @@ jobs:
       AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
       AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
       AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
- 
+  
+  BuildApplication:
+    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
+    
+  DeployApplicationToTest:
+    uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
+    needs: BuildApplication
+    with:
+      Title: System Test
+      Environment: SystemTest
+      ApplicationName: needs.DeployInfraToTest.outputs.AppName
+    secrets:
+      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+    
