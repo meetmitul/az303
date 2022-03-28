@@ -85,5 +85,5 @@ jobs:
     - name: 'Deploy web app'
       uses: azure/webapps-deploy@v2.2.3
       with:
-        app-name: "app-cicd-demo-SystemTest" #${{ inputs.AppName }}
+        app-name: ${{ inputs.AppName }}
         package: './Application/build'
