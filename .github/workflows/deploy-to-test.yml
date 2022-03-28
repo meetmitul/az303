@@ -1,9 +1,10 @@
 name: Deploy to test 
 on:
   workflow_dispatch:
-  
-jobs:
-    
+
+env:
+  AZURE_WEBAPP_NAME:  app-cicd-demo-SystemTest #${{jobs.DeployInfraToTest.outputs.AppName}}  
+jobs:          
   DeployInfraToTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #needs: build
@@ -28,8 +29,8 @@ jobs:
     with:
       Title: System Test
       Environment: SystemTest
-      AppName: app-cicd-demo-SystemTest # ${{ needs.DeployInfraToTest.outputs.AppName }}
-      AppURL:  ${{ needs.DeployInfraToTest.outputs.AppURL }}
+      AppName: ${{env.AZURE_WEBAPP_NAME}} #app-cicd-demo-SystemTest # ${{needs.DeployInfraToTest.outputs.AppName}}
+      AppURL:  ${{needs.DeployInfraToTest.outputs.AppURL}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
