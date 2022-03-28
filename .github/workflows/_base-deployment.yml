@@ -14,9 +14,9 @@ on:
       AppURL:
         required: true
         type: string
-#    secrets:
-#      az_credentials:
-#        required: true
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
 
 #env:
 #  AZURE_WEBAPP_NAME: "cicdpoc-prod"    # set this to your application's name
@@ -51,7 +51,7 @@ jobs:
         unzip -qq ./buildartifacts/Application.zip -d .
     
     - name: Login to Azure
-      uses: azure/login@v1
+      uses: Azure/login@v1.4.3
       continue-on-error: false
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
