@@ -31,7 +31,8 @@ jobs:
         id: replaceVariable
         run: |
           echo  ${{needs.DeployInfraToTest.outputs.AppName}}
-          $AppName=${{needs.DeployInfraToTest.outputs.AppName}}
+          echo $AppName
+          AppName=${{needs.DeployInfraToTest.outputs.AppName}}
           echo $AppName
           echo "::set-output name=AppName::$AppName"
           
@@ -41,6 +42,7 @@ jobs:
     needs: 
       - BuildApplication
       - DeployInfraToTest
+      - RecreateWebAppName
     with:
       Title: System Test
       Environment: SystemTest
