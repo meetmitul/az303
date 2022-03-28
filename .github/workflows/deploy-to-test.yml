@@ -34,7 +34,7 @@ jobs:
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
-          echo "Environment variable - ${{eng.aName}}
+          echo "Environment variable - ${{env.aName}}
           
   DeployApplicationToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
