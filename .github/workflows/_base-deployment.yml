@@ -83,7 +83,7 @@ jobs:
      #   SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
   
     - name: 'Deploy web app'
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v2.2.3
       with:
         app-name: ${{ inputs.AppName }}
         package: './Application/build'
