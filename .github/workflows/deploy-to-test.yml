@@ -18,15 +18,17 @@ jobs:
       AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
       AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
       AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
-  
+      
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
-#  EchoEnv:
-#    runs-on: ubuntu
-#    steps:
-#      - name: step1
-#        run: |
-#          echo environment variable is $AppName 
+
+  EchoEnv:
+    runs-on: ubuntu
+    steps:
+      - name: step1
+        run: |
+          echo environment variable is $AppName
+          echo environment variable2 is ${{ env.AppName }}
         
 
 
