@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
         name: ${{inputs.Environment}}
-        url: http://cicdpoc-prod.azurewebsites.net/ 
+        url: ${{inputs.AppURL}}
     env:
       Title: ${{inputs.Environment}} Environment
     
