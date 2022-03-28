@@ -2,7 +2,7 @@ name: Deploy to test
 on:
   workflow_dispatch:
 env:
-  ANAME: helloworld
+  ANAME: app-cicd-demo-SystemTest
 jobs:          
   DeployInfraToTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
@@ -34,7 +34,7 @@ jobs:
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
-          echo "Environment variable - ${{env.ANAME}}
+          echo "Environment variable - ${{env.ANAME}}"
           
   DeployApplicationToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
@@ -46,9 +46,10 @@ jobs:
     with:
       Title: System Test
       Environment: SystemTest
+      AppName: ${{env.ANAME}}
       #AppName: ${{needs.DeployInfraToTest.outputs.AppName}}
-      AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
-      AppURL: ${{needs.DeployInfraToTest.outputs.AppName}}
+      AppURL: ${{needs.RecreateWebAppName.outputs.APPNAME}}
+      #AppURL: ${{needs.DeployInfraToTest.outputs.AppName}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
