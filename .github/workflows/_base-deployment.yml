@@ -11,6 +11,9 @@ on:
       AppName:
         required: true
         type: string
+      AppURL:
+        required: true
+        type: string
     secrets:
       az_credentials:
         required: true
