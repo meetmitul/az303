@@ -34,7 +34,7 @@ jobs:
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
-          echo "Environment variable - ${{env.ANAME}}"
+          
           
   DeployApplication:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
@@ -46,8 +46,8 @@ jobs:
     with:
       Title: Development Title
       Environment: Development
-      AppName: ${{needs.env.ANAME}} #doesn't work. unrecognised env
-      #AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
+      #AppName: ${{env.ANAME}} #doesn't work. unrecognised env
+      AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
       AppURL: ${{needs.DeployInfra.outputs.AppName}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
