@@ -1,7 +1,8 @@
 name: Deploy to test 
 on:
   workflow_dispatch:
-
+env:
+  aName: helloworld
 jobs:          
   DeployInfraToTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
@@ -23,19 +24,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: DeployInfraToTest
     outputs:
-      AppName: ${{steps.replaceVariable.APPNAME}}
-    env:
-      AppName: xxxx
+      APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
     steps:
       - name: Replace name of AppName
         id: replaceVariable
         run: |
           echo  ${{needs.DeployInfraToTest.outputs.AppName}}
-          echo $AppName
           AppName=${{needs.DeployInfraToTest.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
+          echo "Environment variable - ${{eng.aName}}
           
   DeployApplicationToTest:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
@@ -47,8 +46,8 @@ jobs:
     with:
       Title: System Test
       Environment: SystemTest
-      AppName: ${{needs.DeployInfraToTest.outputs.AppName}}
-      #AppName: ${{needs.RecreateWebAppName.outputs.AppName}}
+      #AppName: ${{needs.DeployInfraToTest.outputs.AppName}}
+      AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
       AppURL: ${{needs.DeployInfraToTest.outputs.AppName}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
