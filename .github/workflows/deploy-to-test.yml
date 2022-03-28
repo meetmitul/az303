@@ -28,7 +28,7 @@ jobs:
     with:
       Title: System Test
       Environment: SystemTest
-      AppName: ${{ needs.DeployInfraToTest.outputs.AppName }}
+      AppName: app-cicd-demo-SystemTest # ${{ needs.DeployInfraToTest.outputs.AppName }}
       AppURL:  ${{ needs.DeployInfraToTest.outputs.AppURL }}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
