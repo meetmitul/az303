@@ -46,10 +46,9 @@ jobs:
     with:
       Title: System Test
       Environment: SystemTest
-      AppName: ${{env.ANAME}}
-      #AppName: ${{needs.DeployInfraToTest.outputs.AppName}}
-      AppURL: ${{needs.RecreateWebAppName.outputs.APPNAME}}
-      #AppURL: ${{needs.DeployInfraToTest.outputs.AppName}}
+      #AppName: ${{env.ANAME}} --doesn't work. unrecognised env
+      AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
+      AppURL: ${{needs.DeployInfraToTest.outputs.AppName}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
