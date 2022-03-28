@@ -62,6 +62,6 @@ resource "azurerm_app_service" "cicd_app" {
 
   site_config {
     use_32_bit_worker_process = true # this is only because using F1 SKU which doens't support 64bit
-    linux_fx_version = "DOTNETCORE|3.1"
+    windows_fx_version = "DOTNETCORE|3.1"
   }
 }
