@@ -38,11 +38,11 @@ jobs:
       name: ${{inputs.Environment}}
       url: ${{ steps.terraformStep.outputs.APP_URL }}
     steps:
-    - name: Azure Login
-      uses: Azure/login@v1.4.3
-      with:
+#    - name: Azure Login
+#      uses: Azure/login@v1.4.3
+#      with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+#        creds: ${{secrets.AZURE_CREDENTIALS}}
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}}
       #  enable-AzPSSession: true
 
