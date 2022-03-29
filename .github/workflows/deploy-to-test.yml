@@ -4,7 +4,7 @@ on:
 env:
   ANAME: app-cicd-demo-SystemTest
 jobs:          
-  DeployInfraToTest:
+  DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
@@ -22,33 +22,33 @@ jobs:
         
   RecreateWebAppName:
     runs-on: ubuntu-latest
-    needs: DeployInfraToTest
+    needs: DeployInfra
     outputs:
       APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
     steps:
       - name: Replace name of AppName
         id: replaceVariable
         run: |
-          echo  ${{needs.DeployInfraToTest.outputs.AppName}}
-          AppName=${{needs.DeployInfraToTest.outputs.AppName}}
+          echo  ${{needs.DeployInfra.outputs.AppName}}
+          AppName=${{needs.DeployInfra.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
           echo "Environment variable - ${{env.ANAME}}"
           
-  DeployApplicationToTest:
+  DeployApplication:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
     #if: false
     needs: 
       - BuildApplication
-      - DeployInfraToTest
+      - DeployInfra
       - RecreateWebAppName
     with:
       Title: System Test
       Environment: SystemTest
       #AppName: ${{env.ANAME}} --doesn't work. unrecognised env
       AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
-      AppURL: ${{needs.DeployInfraToTest.outputs.AppName}}
+      AppURL: ${{needs.DeployInfra.outputs.AppName}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
