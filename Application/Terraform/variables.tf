@@ -39,13 +39,13 @@
 # }
 
 variable "AppService_Plan_name" {
-    type = string
-    description = "Please provide name of the App Service Plan"
-    default = "plan-cicdpoc"
+  type        = string
+  description = "Please provide name of the App Service Plan"
+  default     = "plan-cicdpoc"
 }
 
 variable "AppServiceName" {
-    type = string
-    description = "Please provide name of the App Service"
-    default = "app-cicdpoc"
+  type        = string
+  description = "Please provide name of the App Service"
+  default     = "app-cicdpoc"
 }
