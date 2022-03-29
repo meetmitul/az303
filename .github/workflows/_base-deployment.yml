@@ -65,14 +65,15 @@ jobs:
    #     echo ${{secrets.az_credentials.tenantId}}
     
       
-   # - name: Azure key vault - Get Secrets
-   #   uses: Azure/get-keyvault-secrets@v1
-   #   id: GetAzureSecrets
-   #   with:
+    - name: Azure key vault - Get Secrets
+      uses: Azure/get-keyvault-secrets@v1
+      id: GetAzureSecrets
+      with:
         # Name of the azure key vault
-    #    keyvault: kv-cicd-poc-${{inputs.Environment}}
+        keyvault: kv-cicd-poc-${{inputs.Environment}}
         # Name of the secret to be fetched
-    #    secrets: topsecret
+        secrets: topsecret
+    
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
