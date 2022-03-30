@@ -81,7 +81,7 @@ jobs:
         files: '**/appsettings.json'
       env:
         SampleConfig.Title: ${{inputs.Title}}
-     #   SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
+        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
   
     - name: 'Deploy web app'
       uses: azure/webapps-deploy@v2.2.3
