@@ -1,15 +1,13 @@
 name: Deploy to Development 
 on:
   workflow_dispatch:
-env:
-  ANAME: app-cicd-demo-Development
+
 jobs:          
   DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
       Environment: Development
-
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
@@ -46,7 +44,6 @@ jobs:
     with:
       Title: Development Title
       Environment: Development
-      #AppName: ${{env.ANAME}} #doesn't work. unrecognised env
       AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
       AppURL: ${{needs.DeployInfra.outputs.AppName}}
     secrets:
