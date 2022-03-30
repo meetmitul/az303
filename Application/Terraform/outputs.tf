@@ -1,5 +1,5 @@
 output "ApplicationURL" {
-  value       = "${azurerm_app_service.cicd_app.name}.azurewebsites.net"
+  value       = "https://${azurerm_app_service.cicd_app.name}.azurewebsites.net"
   description = "The URL for the App Service."
 }
 
