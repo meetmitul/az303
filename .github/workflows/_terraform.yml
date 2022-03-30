@@ -53,7 +53,7 @@ jobs:
           export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
           export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
-          terraform init -out=tfplan
+          terraform init -input=false
     
     - name: Plan Terraform
       working-directory: Application/Terraform/
