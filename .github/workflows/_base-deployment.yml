@@ -17,27 +17,15 @@ on:
     secrets:
       AZURE_CREDENTIALS:
         required: true
-
-#env:
-#  AZURE_WEBAPP_NAME: "cicdpoc-prod"    # set this to your application's name
-#  AZURE_WEBAPP_PACKAGE_PATH: './aspnet-core-dotnet-core'             # set this to the path to your web app project, defaults to the repository root
-#  DOTNET_VERSION: '3.1.x'                  # set this to the dot net version to use
-#  RESOURCEGROUPNAME: "rg-cicd-poc-mp"
-#  LOCATION: "Australia Southeast"
-#  HOSTINGPLANNAME: "asp-cicd-poc-mp"
-#  APPINSIGHTLOCATION: "Australia Southeast"
-#  SKU: "S1 Standard"
-
+        
 jobs:
   Deploy:
     name: Deploy To ${{inputs.Environment}}
     runs-on: ubuntu-latest
     environment:
         name: ${{inputs.Environment}}
-        url: ${{inputs.AppURL}}
-    env:
-      Title: ${{inputs.Environment}} Environment
-    
+        url: http://cicdpoc-prod.azurewebsites.net/  # ${{inputs.AppURL}}
+        
     steps:
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
@@ -55,22 +43,13 @@ jobs:
       continue-on-error: false
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-   # - name: Echo login details
-   #   run: |
-   #     echo "${{secrets.az_credentials.clientId}}"
-   #     echo "Environment is ${{inputs.Environment}}"
-   #     echo ${{secrets.az_credentials}}
-   #     echo ${{secrets.az_credentials.subscriptionId}}
-   #     echo ${{secrets.az_credentials.clientSecret}}
-   #     echo ${{secrets.az_credentials.tenantId}}
-    
       
     - name: Azure key vault - Get Secrets
       uses: Azure/get-keyvault-secrets@v1
       id: GetAzureSecrets
       with:
         # Name of the azure key vault
-        keyvault: kv-cicd-poc-${{inputs.Environment}}
+        keyvault: kv-cicd-demo-${{inputs.Environment}}
         # Name of the secret to be fetched
         secrets: topsecret
     
@@ -81,7 +60,7 @@ jobs:
         files: '**/appsettings.json'
       env:
         SampleConfig.Title: ${{inputs.Title}}
-     #   SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
+        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
   
     - name: 'Deploy web app'
       uses: azure/webapps-deploy@v2.2.3
