@@ -7,8 +7,6 @@ on:
         required: true
         type: string
     secrets:
-      AZURE_CREDENTIALS:
-        required: true
       AZURE_TENANTID:
         required: true
       AZURE_CLIENTID:
@@ -24,51 +22,53 @@ on:
       AppName:
         description: "Application Name"
         value: ${{ jobs.terraform.outputs.AppName }}
-
         
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     outputs:
-      AppName: ${{ steps.terraformStep.outputs.APP_NAME }}
-      AppURL: ${{ steps.terraformStep.outputs.APP_URL }}
-
+      AppName: ${{ steps.terraformApplyStep.outputs.APP_NAME }}
+      AppURL: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     environment: 
       name: ${{inputs.Environment}}
-      url: ${{ steps.terraformStep.outputs.APP_URL }}
+      url: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     steps:
-#    - name: Azure Login
-#      uses: Azure/login@v1.4.3
-#      with:
-        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-#        creds: ${{secrets.AZURE_CREDENTIALS}}
-       # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}}
-      #  enable-AzPSSession: true
-
     - name: Checkout
       uses: actions/checkout@v2
     
     - name: Install Terraform
-      id: terraformStep
+      id: terraformPlanStep
       working-directory: Application/Terraform/
       run: |
-          echo "Enviornment is ${{inputs.Environment}}"
-          pwd
-          ls
           sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform
+
+    - name: Init Terraform
+      working-directory: Application/Terraform/
+      run: |
           export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
           export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
           export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
-          terraform init
+          terraform init -out=tfplan
+    
+    - name: Plan Terraform
+      working-directory: Application/Terraform/
+      run: |
+          echo "Enviornment is ${{inputs.Environment}}"
           terraform workspace add ${{inputs.Environment}}
           terraform workspace select ${{inputs.Environment}}
-          terraform plan -var-file=${{inputs.Environment}}.tfvars
-          terraform apply -auto-approve -var-file=${{inputs.Environment}}.tfvars
+          terraform plan -var-file=${{inputs.Environment}}.tfvars -out=tfplan -input=false
+
+
+    - name: Install Terraform
+      id: terraformApplyStep
+      working-directory: Application/Terraform/
+      run: |
+          terraform apply tfplan -auto-approve -var-file=${{inputs.Environment}}.tfvars -input=false
           APP_URL=$(terraform output ApplicationURL)
           APP_NAME=$(terraform output ApplicationName)
           echo App URL $APP_URL
