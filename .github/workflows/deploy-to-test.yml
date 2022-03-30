@@ -1,17 +1,15 @@
-name: Deploy to test 
+name: Deploy to System Test 
 on:
   workflow_dispatch:
-env:
-  ANAME: app-cicd-demo-SystemTest
+
 jobs:          
   DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
       Environment: SystemTest
-
     secrets:
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+#      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
       AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
       AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
@@ -34,7 +32,7 @@ jobs:
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
-          echo "Environment variable - ${{env.ANAME}}"
+          
           
   DeployApplication:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
@@ -44,9 +42,8 @@ jobs:
       - DeployInfra
       - RecreateWebAppName
     with:
-      Title: System Test
+      Title: System Test Title
       Environment: SystemTest
-      #AppName: ${{env.ANAME}} --doesn't work. unrecognised env
       AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
       AppURL: ${{needs.DeployInfra.outputs.AppName}}
     secrets:
