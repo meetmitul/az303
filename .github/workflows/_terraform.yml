@@ -62,7 +62,8 @@ jobs:
           terraform workspace add ${{inputs.Environment}}
           terraform workspace select ${{inputs.Environment}}
           terraform plan -var-file=${{inputs.Environment}}.tfvars -out=tfplan -input=false
-
+          STATUS=$?
+          if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi          
 
     - name: Install Terraform
       id: terraformApplyStep
