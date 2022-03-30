@@ -70,7 +70,7 @@ jobs:
       id: GetAzureSecrets
       with:
         # Name of the azure key vault
-        keyvault: kv-cicd-poc-${{inputs.Environment}}
+        keyvault: kv-cicd-demo-${{inputs.Environment}}
         # Name of the secret to be fetched
         secrets: topsecret
     
