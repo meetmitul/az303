@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
         name: ${{inputs.Environment}}
-        url: "www.google.com" # ${{inputs.AppURL}}
+        url: http://cicdpoc-prod.azurewebsites.net/  # ${{inputs.AppURL}}
         
     steps:
     - name: Download Build Artifact
