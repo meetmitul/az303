@@ -7,8 +7,8 @@ on:
         required: true
         type: string
     secrets:
-#      AZURE_CREDENTIALS:
-#        required: true
+      AZURE_CREDENTIALS:
+        required: true
       AZURE_TENANTID:
         required: true
       AZURE_CLIENTID:
@@ -38,11 +38,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-  #  - name: Azure Login
-  #    uses: Azure/login@v1.4.3
-  #    with:
+    - name: Azure Login
+      uses: Azure/login@v1.4.3
+      with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        # creds: ${{secrets.AZURE_CREDENTIALS}}
+         creds: ${{secrets.AZURE_CREDENTIALS}}
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}}
   #      enable-AzPSSession: true
 
