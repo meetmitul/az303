@@ -3,13 +3,13 @@ on:
   workflow_dispatch:
 env:
   Environment: Production
-  ApplicaitonName: AppNameHere
+  APPNAME: AppNameHere
 jobs:          
   DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
-      Environment: ${{env.Environment}}
+      Environment: $APPNAME
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
@@ -34,6 +34,8 @@ jobs:
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
+          echo ${{needs.DeployInfra.outputs.AppName}} >>$APPNAME
+          echo "Environment variable is $APPNAME"
           
           
   DeployApplication:
@@ -45,7 +47,7 @@ jobs:
       - RecreateWebAppName
     with:
       Title: $Environment - Title
-      Environment: ${{env.Environment}}
+      Environment: $APPNAME
       AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
       AppURL: ${{needs.DeployInfra.outputs.AppName}}
     secrets:
