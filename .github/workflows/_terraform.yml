@@ -7,8 +7,8 @@ on:
         required: true
         type: string
     secrets:
-      AZURE_CREDENTIALS:
-        required: true
+#      AZURE_CREDENTIALS:
+#        required: true
       AZURE_TENANTID:
         required: true
       AZURE_CLIENTID:
@@ -38,13 +38,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Azure Login
-      uses: Azure/login@v1.4.3
-      with:
+#    - name: Azure Login
+#      uses: Azure/login@v1.4.3
+#      with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-         creds: ${{secrets.AZURE_CREDENTIALS}}
+#         creds: ${{secrets.AZURE_CREDENTIALS}}
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}} 
-         enable-AzPSSession: true
+       #  enable-AzPSSession: true
 
     - name: Install Terraform
       id: terraformPlanStep
@@ -54,6 +54,7 @@ jobs:
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform
+          echo "Enviornment is ${{inputs.Environment}}"
 
     - name: Init Terraform
       working-directory: Application/Terraform/
