@@ -1,9 +1,6 @@
 name: Deploy to Production 
 on:
   workflow_dispatch:
-env:
-  ENVIRONMENT_NAME: Production
-  APPNAME: AppNameHere
 jobs:          
   DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
@@ -20,11 +17,12 @@ jobs:
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
         
-  RecreateWebAppName:
+  ReassignOutputVariables:
     runs-on: ubuntu-latest
     needs: DeployInfra
     outputs:
       APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
+      APPURL: ${{steps.replaceVariable.outputs.APPURL}}
     steps:
       - name: Replace name of AppName
         id: replaceVariable
@@ -34,9 +32,12 @@ jobs:
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
-          echo ${{needs.DeployInfra.outputs.AppName}} >>$APPNAME
-          echo "Environment variable is $APPNAME"
           
+          echo  ${{needs.DeployInfra.outputs.AppURL}}
+          AppURL=${{needs.DeployInfra.outputs.AppURL}}
+          echo $AppURL
+          echo "::set-output name=APPURL::$AppURL"
+          echo ${{needs.ReassignOutputVariables.outputs.APPURL}}
           
   DeployApplication:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
@@ -44,12 +45,12 @@ jobs:
     needs: 
       - BuildApplication
       - DeployInfra
-      - RecreateWebAppName
+      - ReassignOutputVariables
     with:
       Title: $Environment - Title
-      Environment: ${{ env.ENVIRONMENT_NAME }}
-      AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
-      AppURL: ${{needs.DeployInfra.outputs.AppName}}
+      Environment: Production
+      AppName: ${{needs.ReassignOutputVariables.outputs.APPNAME}}
+      AppURL: ${{needs.ReassignOutputVariables.outputs.APPURL}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
