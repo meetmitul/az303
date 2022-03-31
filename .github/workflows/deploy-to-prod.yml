@@ -6,7 +6,7 @@ jobs:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
-      Environment: ${{ env.ENVIRONMENT_NAME }}
+      Environment: Production
     secrets:
       #AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
