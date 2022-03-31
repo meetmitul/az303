@@ -8,7 +8,7 @@ jobs:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
-      Environment: ${{env.Environment}}
+      Environment: $Environment
     secrets:
 #      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
@@ -43,8 +43,8 @@ jobs:
       - DeployInfra
       - RecreateWebAppName
     with:
-      Title: ${{env.Environment}} - Title
-      Environment: ${{env.Environment}}
+      Title: $Environment - Title
+      Environment: $Environment
       AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
       AppURL: ${{needs.DeployInfra.outputs.AppName}}
     secrets:
