@@ -47,7 +47,7 @@ jobs:
       - DeployInfra
       - ReassignOutputVariables
     with:
-      Title: $Environment - Title
+      Title: Production - Title
       Environment: Production
       AppName: ${{needs.ReassignOutputVariables.outputs.APPNAME}}
       AppURL: ${{needs.ReassignOutputVariables.outputs.APPURL}}
