@@ -2,14 +2,14 @@ name: Deploy to Production
 on:
   workflow_dispatch:
 env:
-  Environment: Production
+  ENVIRONMENT_NAME: Production
   APPNAME: AppNameHere
 jobs:          
   DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
-      Environment: $APPNAME
+      Environment: ${{ env.ENVIRONMENT_NAME }}
     secrets:
       #AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
@@ -47,7 +47,7 @@ jobs:
       - RecreateWebAppName
     with:
       Title: $Environment - Title
-      Environment: $APPNAME
+      Environment: ${{ env.ENVIRONMENT_NAME }}
       AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
       AppURL: ${{needs.DeployInfra.outputs.AppName}}
     secrets:
