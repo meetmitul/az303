@@ -28,12 +28,14 @@ on:
 jobs:
   terraform:
     name: 'Terraform'
+    env:
+      ENV_NAME: ${{ inputs.Environment }} 
     runs-on: ubuntu-latest
     outputs:
       AppName: ${{ steps.terraformApplyStep.outputs.APP_NAME }}
       AppURL: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     environment: 
-      name: ${{inputs.Environment}}
+      name: ${{env.ENV_NAME}}
       url: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     steps:
     - name: Checkout
@@ -45,23 +47,17 @@ jobs:
 #         creds: ${{secrets.AZURE_CREDENTIALS}}
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}} 
        #  enable-AzPSSession: true
-    - name: Extract Branch Name
+    - name: Update environmetn if Adhoc
       if: ${{ inputs.Environment == 'Adhoc' }}
-      id: extract_branch
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      
-    - name: Replace Adhoc Environment with Projectcode
-      run: |
+      run: | 
         echo "This is adhoc environment"
-        echo "Branch name is ${{ steps.extract_branch.outputs.branch }}"
-        PROJECTCODE=$(echo ${{ steps.extract_branch.outputs.branch }} | cut -d'-' -f 1)
+        echo "Branch name is ${GITHUB_REF#refs/heads/}"
+        PROJECTCODE=$(echo ${GITHUB_REF#refs/heads/} | cut -d'-' -f 1)
         echo "Project code  is $PROJECTCODE"
-        echo $PROJECTCODE >> ${{ inputs.Environment }}
-        echo "Environ now is ${{ inputs.Environment }}"
+        echo $PROJECTCODE >> ${{ env.ENV_NAME }}
+        echo "Environ now is ${{ env.ENV_NAME }}"
         
-        
-      
+              
     - name: Install Terraform
       id: terraformPlanStep
       working-directory: Application/Terraform/
@@ -70,7 +66,8 @@ jobs:
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform
-          echo "Enviornment is ${{inputs.Environment}}"
+          echo "Enviornment is ${{env.ENV_NAME}}"
+          
 
     - name: Init Terraform
       working-directory: Application/Terraform/
@@ -88,10 +85,10 @@ jobs:
           export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
           export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
-          echo "Enviornment is ${{inputs.Environment}}"
-          terraform workspace add ${{inputs.Environment}}
-          terraform workspace select ${{inputs.Environment}}
-          terraform plan -var-file=${{inputs.Environment}}.tfvars -out=tfplan -input=false
+          echo "Enviornment is ${{env.ENV_NAME}}"
+          terraform workspace new ${{env.ENV_NAME}}
+          terraform workspace select ${{env.ENV_NAME}}
+          terraform plan -var-file=${{env.ENV_NAME}}.tfvars -out=tfplan -input=false
           STATUS=$?
 #          if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
                     
