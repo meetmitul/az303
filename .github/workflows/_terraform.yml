@@ -45,7 +45,15 @@ jobs:
 #         creds: ${{secrets.AZURE_CREDENTIALS}}
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}} 
        #  enable-AzPSSession: true
-
+    - name: Replace Adhoc Environment with Projectcode
+      if: ${{ inputs.Environment == Adhoc }}
+      run: |
+        echo "This is adhoc environment"
+        PROJECTCODE=$(echo ${{ github.event.repository.name }} | cut -d'-' -f 1)
+        echo "Project code  $PROJECTCODE"
+        echo $PROJECTCODE >> ${{ inputs.Environment }}
+        
+      
     - name: Install Terraform
       id: terraformPlanStep
       working-directory: Application/Terraform/
