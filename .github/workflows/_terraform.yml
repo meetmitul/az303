@@ -35,7 +35,7 @@ jobs:
       AppName: ${{ steps.terraformApplyStep.outputs.APP_NAME }}
       AppURL: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     environment: 
-      name: ${{env.ENV_NAME}}
+      name: ${{ENV_NAME}}
       url: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     steps:
     - name: Checkout
