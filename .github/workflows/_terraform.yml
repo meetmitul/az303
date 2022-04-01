@@ -75,7 +75,7 @@ jobs:
           terraform init -input=false
           
     - name: Switch workspace if needed
-      if: always()
+      if: ${{ always() }}
       working-directory: Application/Terraform/
       run: |
           export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
@@ -85,6 +85,7 @@ jobs:
           echo "Enviornment is ${{env.environment_name}}"
           terraform workspace new ${{env.environment_name}} 
           terraform workspace select ${{env.environment_name}}
+          echo "Workspace switched to ${{env.environment_name}}"
       
     - name: Plan Terraform
       working-directory: Application/Terraform/
