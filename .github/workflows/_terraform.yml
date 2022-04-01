@@ -46,7 +46,7 @@ jobs:
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}} 
        #  enable-AzPSSession: true
     - name: Replace Adhoc Environment with Projectcode
-      if: ${{ inputs.Environment == Adhoc }}
+      if: ${{ inputs.Environment == 'Adhoc' }}
       run: |
         echo "This is adhoc environment"
         PROJECTCODE=$(echo ${{ github.event.repository.name }} | cut -d'-' -f 1)
