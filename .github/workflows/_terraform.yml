@@ -45,13 +45,21 @@ jobs:
 #         creds: ${{secrets.AZURE_CREDENTIALS}}
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}} 
        #  enable-AzPSSession: true
-    - name: Replace Adhoc Environment with Projectcode
+    - name: Extract Branch Name
       if: ${{ inputs.Environment == 'Adhoc' }}
+      id: extract_branch
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      
+    - name: Replace Adhoc Environment with Projectcode
       run: |
         echo "This is adhoc environment"
-        PROJECTCODE=$(echo ${{ github.event.repository.name }} | cut -d'-' -f 1)
-        echo "Project code  $PROJECTCODE"
+        echo "Branch name is ${{ steps.extract_branch.outputs.branch }}"
+        PROJECTCODE=$(echo ${{ steps.extract_branch.outputs.branch }} | cut -d'-' -f 1)
+        echo "Project code  is $PROJECTCODE"
         echo $PROJECTCODE >> ${{ inputs.Environment }}
+        echo "Environ now is ${{ inputs.Environment }}"
+        
         
       
     - name: Install Terraform
