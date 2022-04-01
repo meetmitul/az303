@@ -88,11 +88,16 @@ jobs:
     - name: Plan Terraform
       working-directory: Application/Terraform/
       run: |
+          export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
+          export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
+          export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
+          export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
           terraform plan -var-file=${{inputs.Environment}}.tfvars -out=tfplan -input=false
           STATUS=$?
 #          if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
                     
 # if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
+    
     - name: Apply Terraform
       id: terraformApplyStep
       working-directory: Application/Terraform/
