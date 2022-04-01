@@ -28,8 +28,6 @@ on:
 jobs:
   terraform:
     name: 'Terraform'
-    env:
-      ENV_NAME: ${{ inputs.Environment }} 
     runs-on: ubuntu-latest
     outputs:
       AppName: ${{ steps.terraformApplyStep.outputs.APP_NAME }}
@@ -48,7 +46,6 @@ jobs:
        # subscription-id: ${{secrets.AZURE_SUBSCRIPTIONID}} 
        #  enable-AzPSSession: true
     - name: Update environmetn if Adhoc
-      if: ${{ inputs.Environment == 'Adhoc' }}
       run: | 
         echo "This is adhoc environment"
         echo "Branch name is ${GITHUB_REF#refs/heads/}"
@@ -56,7 +53,8 @@ jobs:
         echo "Project code  is $PROJECTCODE"
         echo $PROJECTCODE >> ${{ env.ENV_NAME }}
         echo "Environ now is $ENV_NAME"
-        echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
+        if [ ${{inputs.Environment == "Adhoc" ]; then echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV; else echo "${{inputs.Environment}}=$ENV_NAME" >> $GITHUB_ENV >> then
+
         
               
     - name: Install Terraform
