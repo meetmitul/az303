@@ -51,7 +51,7 @@ jobs:
         echo "Branch name is ${GITHUB_REF#refs/heads/}"
         PROJECTCODE=$(echo ${GITHUB_REF#refs/heads/} | cut -d'-' -f 1)
         echo "Project code  is $PROJECTCODE"
-        if [ ${{inputs.Environment}} = "Adhoc" ]; then echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV; else echo "${{inputs.Environment}}=$ENV_NAME" >> $GITHUB_ENV"; fi
+        if [ ${{inputs.Environment}} = Adhoc ]; then echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV; else echo "${{inputs.Environment}}=$ENV_NAME" >> $GITHUB_ENV; fi
         echo "Environ now is ${{env.ENV_NAME}}"
               
     - name: Install Terraform
