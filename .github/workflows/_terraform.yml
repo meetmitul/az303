@@ -54,7 +54,7 @@ jobs:
         echo "Branch name is ${GITHUB_REF#refs/heads/}"
         PROJECTCODE=$(echo ${GITHUB_REF#refs/heads/} | cut -d'-' -f 1)
         echo "Project code  is $PROJECTCODE"
-        ENV_NAME=$PROJECTCODE
+        echo $PROJECTCODE >> ${{ env.ENV_NAME }}
         echo "Environ now is $ENV_NAME"
         
               
