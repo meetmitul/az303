@@ -1,15 +1,14 @@
-name: Deploy to System Test 
+name: Deploy to Adhoc 
 on:
   workflow_dispatch:
-
 jobs:          
   DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
     with:
-      Environment: SystemTest
+      Environment: Adhoc
     secrets:
-#      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      #AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
       AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
       AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
@@ -18,11 +17,12 @@ jobs:
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
         
-  RecreateWebAppName:
+  ReassignOutputVariables:
     runs-on: ubuntu-latest
     needs: DeployInfra
     outputs:
       APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
+      APPURL: ${{steps.replaceVariable.outputs.APPURL}}
     steps:
       - name: Replace name of AppName
         id: replaceVariable
@@ -33,6 +33,11 @@ jobs:
           echo "::set-output name=APPNAME::$AppName"
           echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
           
+          echo  ${{needs.DeployInfra.outputs.AppURL}}
+          AppURL=${{needs.DeployInfra.outputs.AppURL}}
+          echo $AppURL
+          echo "::set-output name=APPURL::$AppURL"
+          echo ${{needs.ReassignOutputVariables.outputs.APPURL}}
           
   DeployApplication:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
@@ -40,12 +45,12 @@ jobs:
     needs: 
       - BuildApplication
       - DeployInfra
-      - RecreateWebAppName
+      - ReassignOutputVariables
     with:
-      Title: System Test Title
-      Environment: SystemTest
-      AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
-      AppURL: ${{needs.DeployInfra.outputs.AppName}}
+      Title: Adhoc - Title
+      Environment: Adhoc
+      AppName: ${{needs.ReassignOutputVariables.outputs.APPNAME}}
+      AppURL: ${{needs.ReassignOutputVariables.outputs.APPURL}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     

@@ -1,16 +1,56 @@
-name: Deploy to Production  
+name: Deploy to Production 
 on:
   workflow_dispatch:
-  
-jobs:
-  build:
-    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
-    
-  deployToProd:
-    uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
-    needs: build
+jobs:          
+  DeployInfra:
+    uses: meetmitul/az303/.github/workflows/_terraform.yml@master
+    #if: ${{ true==false }}
     with:
-      Title: Production1
       Environment: Production
     secrets:
-      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      #AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
+      AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
+      AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
+      AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
+      
+  BuildApplication:
+    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
+        
+  ReassignOutputVariables:
+    runs-on: ubuntu-latest
+    needs: DeployInfra
+    outputs:
+      APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
+      APPURL: ${{steps.replaceVariable.outputs.APPURL}}
+    steps:
+      - name: Replace name of AppName
+        id: replaceVariable
+        run: |
+          echo  ${{needs.DeployInfra.outputs.AppName}}
+          AppName=${{needs.DeployInfra.outputs.AppName}}
+          echo $AppName
+          echo "::set-output name=APPNAME::$AppName"
+          echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
+          
+          echo  ${{needs.DeployInfra.outputs.AppURL}}
+          AppURL=${{needs.DeployInfra.outputs.AppURL}}
+          echo $AppURL
+          echo "::set-output name=APPURL::$AppURL"
+          echo ${{needs.ReassignOutputVariables.outputs.APPURL}}
+          
+  DeployApplication:
+    uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
+    #if: false
+    needs: 
+      - BuildApplication
+      - DeployInfra
+      - ReassignOutputVariables
+    with:
+      Title: Production - Title
+      Environment: Production
+      AppName: ${{needs.ReassignOutputVariables.outputs.APPNAME}}
+      AppURL: ${{needs.ReassignOutputVariables.outputs.APPURL}}
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+    

@@ -7,25 +7,32 @@ terraform {
     }
   }
 
-    backend "azurerm" {
-        resource_group_name  = "rg-cicd-poc-mp"
-        storage_account_name = "stmitulcicdpoc"
-        container_name       = "terraform-state-storage"
-        key                  = "terraform.tfstate"
-    }
+  backend "azurerm" {
+    resource_group_name  = "rg-cicd-poc-mp"
+    storage_account_name = "stmitulcicdpoc"
+    container_name       = "terraform-state-storage"
+    key                  = "terraform.tfstate"
+  }
 
 
   required_version = ">= 1.1.6"
 }
 
 locals {
-    environment = terraform.workspace
-    location = "australiasoutheast"
-    AppName = "cicd-demo"
+  environment = terraform.workspace
+  location    = "australiasoutheast"
+  AppName     = "cicd-demo"
 }
 
+data "azurerm_client_config" "current" {}
+
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = true
+    }
+
+  }
 }
 
 #module "network" {
@@ -61,6 +68,45 @@ resource "azurerm_app_service" "cicd_app" {
   app_service_plan_id = azurerm_app_service_plan.cicd_appplan.id
 
   site_config {
-    dotnet_framework_version = "v4.0"
+    use_32_bit_worker_process = true # this is only because using F1 SKU which doens't support 64bit
+    windows_fx_version        = "DOTNETCORE|3.1"
   }
 }
+
+resource "azurerm_key_vault" "cicd_vault" {
+  name                        = "kv-${local.AppName}-${local.environment}"
+  location                    = azurerm_resource_group.rg_cicdpoc.location
+  resource_group_name         = azurerm_resource_group.rg_cicdpoc.name
+  enabled_for_disk_encryption = true
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
+
+  sku_name = "standard"
+
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions = [
+      "Get",
+    ]
+
+    secret_permissions = [
+      "Get",
+      "Set",
+      "List"
+    ]
+
+    storage_permissions = [
+      "Get",
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "top_secret" {
+  name         = "topsecret"
+  value        = "Top Secret From ${azurerm_key_vault.cicd_vault.name}"
+  key_vault_id = azurerm_key_vault.cicd_vault.id
+}
+

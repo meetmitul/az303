@@ -1,16 +1,51 @@
 name: Deploy to Development 
 on:
   workflow_dispatch:
-  
-jobs:
-  build:
-    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
-    
-  deployToDev:
-    uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
-    needs: build
+
+jobs:          
+  DeployInfra:
+    uses: meetmitul/az303/.github/workflows/_terraform.yml@master
+    #if: ${{ true==false }}
     with:
-      Title: Development1
       Environment: Development
     secrets:
-      az_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+#      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
+      AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
+      AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
+      AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
+      
+  BuildApplication:
+    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
+        
+  RecreateWebAppName:
+    runs-on: ubuntu-latest
+    needs: DeployInfra
+    outputs:
+      APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
+    steps:
+      - name: Replace name of AppName
+        id: replaceVariable
+        run: |
+          echo  ${{needs.DeployInfra.outputs.AppName}}
+          AppName=${{needs.DeployInfra.outputs.AppName}}
+          echo $AppName
+          echo "::set-output name=APPNAME::$AppName"
+          echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
+          
+          
+  DeployApplication:
+    uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
+    #if: false
+    needs: 
+      - BuildApplication
+      - DeployInfra
+      - RecreateWebAppName
+    with:
+      Title: Development Title
+      Environment: Development
+      AppName: ${{needs.RecreateWebAppName.outputs.APPNAME}}
+      AppURL: ${{needs.DeployInfra.outputs.AppName}}
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+    
