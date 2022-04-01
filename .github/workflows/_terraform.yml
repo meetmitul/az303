@@ -75,7 +75,7 @@ jobs:
           terraform init -input=false
           
     - name: Switch workspace if needed
-      if: ${{ always() }}
+      if: ${{ success() or failure() }}
       working-directory: Application/Terraform/
       run: |
           export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
