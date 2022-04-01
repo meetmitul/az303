@@ -35,7 +35,7 @@ jobs:
       AppName: ${{ steps.terraformApplyStep.outputs.APP_NAME }}
       AppURL: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     environment: 
-      name: ${{ENV_NAME}}
+      name: ${{ inputs.Environment }} 
       url: ${{ steps.terraformApplyStep.outputs.APP_URL }}
     steps:
     - name: Checkout
@@ -54,8 +54,8 @@ jobs:
         echo "Branch name is ${GITHUB_REF#refs/heads/}"
         PROJECTCODE=$(echo ${GITHUB_REF#refs/heads/} | cut -d'-' -f 1)
         echo "Project code  is $PROJECTCODE"
-        echo $PROJECTCODE >> ${{ env.ENV_NAME }}
-        echo "Environ now is ${{ env.ENV_NAME }}"
+        ENV_NAME=$PROJECTCODE
+        echo "Environ now is $ENV_NAME"
         
               
     - name: Install Terraform
@@ -66,7 +66,7 @@ jobs:
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install terraform
-          echo "Enviornment is ${{env.ENV_NAME}}"
+          echo "Enviornment is $ENV_NAME"
           
 
     - name: Init Terraform
@@ -85,10 +85,10 @@ jobs:
           export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
           export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
-          echo "Enviornment is ${{env.ENV_NAME}}"
-          terraform workspace new ${{env.ENV_NAME}}
-          terraform workspace select ${{env.ENV_NAME}}
-          terraform plan -var-file=${{env.ENV_NAME}}.tfvars -out=tfplan -input=false
+          echo "Enviornment is $ENV_NAME"
+          terraform workspace new $ENV_NAME
+          terraform workspace select $ENV_NAME
+          terraform plan -var-file=$ENV_NAME.tfvars -out=tfplan -input=false
           STATUS=$?
 #          if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
                     
