@@ -1,12 +1,8 @@
-name: 'Base Destroy Environment'
-
-on:
-  delete:
-    branches:
-      - p*-*
-  
+name: Branch Deleted
+on: delete
 jobs:
-  terraform:
+  delete:
+    if: github.event.ref_type == 'branch'
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: 
@@ -16,10 +12,11 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Update environmetn if Adhoc
-      run: | 
+      run: |
+        echo "Clean up for branch ${{ github.event.ref }}"
         echo "This is adhoc environment"
-        echo "Branch name is ${GITHUB_REF#refs/heads/}"
-        PROJECTCODE=$(echo ${GITHUB_REF#refs/heads/} | cut -d'-' -f 1)
+        echo "Branch name is ${{ github.event.ref }}"
+        PROJECTCODE=$(echo ${{ github.event.ref }} | cut -d'-' -f 1)
         echo "Project code  is $PROJECTCODE"
         if [ ${{inputs.Environment}} = Adhoc ]; then echo "environment_name=$PROJECTCODE" >> $GITHUB_ENV; else echo "environment_name=${{inputs.Environment}}" >> $GITHUB_ENV; fi
         echo "Environ now is ${{env.environment_name}}"
