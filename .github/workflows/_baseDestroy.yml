@@ -13,10 +13,7 @@ jobs:
 
     - name: Update environmetn if Adhoc
       run: |
-        echo "Clean up for branch ${{ github.event.ref_type }}"
-        echo "Clean up for branch ${{ github.event.ref }}"
         echo "This is adhoc environment"
-        echo "Branch name is ${{ github.event.ref }}"
         echo "Branch name is ${GITHUB_REF#refs/heads/}"
 
         PROJECTCODE=$(echo ${{ github.event.ref }} | cut -d'-' -f 1)
