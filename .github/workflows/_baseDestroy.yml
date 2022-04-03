@@ -18,7 +18,7 @@ jobs:
 
         PROJECTCODE=$(echo ${{ github.event.ref }} | cut -d'-' -f 1)
         echo "Project code  is $PROJECTCODE"
-        if [ ${{inputs.Environment}} = Adhoc ]; then echo "environment_name=$PROJECTCODE" >> $GITHUB_ENV; else echo "environment_name=${{inputs.Environment}}" >> $GITHUB_ENV; fi
+        echo "environment_name=$PROJECTCODE" >> $GITHUB_ENV
         echo "Environ now is ${{env.environment_name}}"
               
     - name: Install Terraform
