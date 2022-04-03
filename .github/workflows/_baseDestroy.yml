@@ -1,0 +1,87 @@
+name: Branch Deleted
+on: workflow_dispatch # delete
+jobs:
+  delete:
+#    if: github.event.ref_type == 'branch'
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: 
+      name: Adhoc 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Update environmetn if Adhoc
+      run: |
+        echo "Clean up for branch ${{ github.event.ref_type }}"
+        echo "Clean up for branch ${{ github.event.ref }}"
+        echo "This is adhoc environment"
+        echo "Branch name is ${{ github.event.ref }}"
+        PROJECTCODE=$(echo ${{ github.event.ref }} | cut -d'-' -f 1)
+        echo "Project code  is $PROJECTCODE"
+        if [ ${{inputs.Environment}} = Adhoc ]; then echo "environment_name=$PROJECTCODE" >> $GITHUB_ENV; else echo "environment_name=${{inputs.Environment}}" >> $GITHUB_ENV; fi
+        echo "Environ now is ${{env.environment_name}}"
+              
+    - name: Install Terraform
+      id: terraformPlanStep
+      working-directory: Application/Terraform/
+      run: |
+        echo "Install Terraform"
+    #      sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+    #      curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+    #      sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    #      sudo apt-get update && sudo apt-get install terraform
+    #      echo "Enviornment is ${{env.environment_name}}"
+          
+    - name: Init Terraform
+      working-directory: Application/Terraform/
+      run: |
+        echo "Init Terraform"
+    #      export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
+    #      export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
+    #      export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
+    #      export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+    #      terraform init -input=false
+          
+    - name: Switch workspace if needed
+      working-directory: Application/Terraform/
+      run: |
+        echo "Switch workspace Terraform"
+    #      export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
+    #      export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
+    #      export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
+    #      export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+    #      echo "Enviornment is ${{env.environment_name}}"
+    #      terraform workspace select ${{env.environment_name}} || terraform workspace new ${{env.environment_name}}
+    #      echo "Workspace switched to ${{env.environment_name}}"
+      
+    - name: Plan Terraform
+      working-directory: Application/Terraform/
+      run: |
+        echo "Plan Terraform"
+     #     export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
+     #     export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
+     #     export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
+     #     export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+     #     terraform plan -var-file=${{inputs.Environment}}.tfvars -out=tfplan -input=false
+     #     STATUS=$?
+#          if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
+                    
+# if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
+    
+    - name: Apply Terraform
+      id: terraformApplyStep
+      working-directory: Application/Terraform/
+      run: |
+          echo "Apply Terraform"
+     #     export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
+     #     export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
+     #     export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
+     #     export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+     #     terraform apply -auto-approve -input=false tfplan
+     #     APP_URL=$(terraform output ApplicationURL)
+     #     APP_NAME=$(terraform output ApplicationName)
+     #     echo App URL $APP_URL
+     #     echo App Name $APP_NAME
+     #     echo "::set-output name=APP_URL::$APP_URL"
+     #     echo "::set-output name=APP_Name::$APP_NAME"
