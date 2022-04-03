@@ -2,7 +2,7 @@ name: Branch Deleted
 on: workflow_dispatch # delete
 jobs:
   delete:
-    if: github.event.ref_type == 'branch'
+#    if: github.event.ref_type == 'branch'
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: 
@@ -13,6 +13,7 @@ jobs:
 
     - name: Update environmetn if Adhoc
       run: |
+        echo "Clean up for branch ${{ github.event.ref_type }}"
         echo "Clean up for branch ${{ github.event.ref }}"
         echo "This is adhoc environment"
         echo "Branch name is ${{ github.event.ref }}"
