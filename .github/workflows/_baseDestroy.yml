@@ -54,7 +54,7 @@ jobs:
           terraform workspace select ${{env.environment_name}} || terraform workspace new ${{env.environment_name}}
           echo "Workspace switched to ${{env.environment_name}}"
       
-    - name: Destroy Terraform
+    - name: Plan Destroy Terraform
       working-directory: Application/Terraform/
       run: |
         echo "Plan Terraform"
@@ -68,7 +68,7 @@ jobs:
                     
 # if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
     
-    - name: Apply Terraform
+    - name: Apply Destroy Terraform
       id: terraformApplyStep
       working-directory: Application/Terraform/
       run: |
@@ -77,7 +77,7 @@ jobs:
           export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
           export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
-          terraform apply -auto-approve -input=false tfplan
+          terraform apply -destroy -auto-approve -input=false tfplan
      #     APP_URL=$(terraform output ApplicationURL)
      #     APP_NAME=$(terraform output ApplicationName)
      #     echo App URL $APP_URL
