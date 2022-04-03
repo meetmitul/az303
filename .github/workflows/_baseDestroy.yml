@@ -36,20 +36,20 @@ jobs:
       working-directory: Application/Terraform/
       run: |
           echo "Init Terraform"
-          export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
-          export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
-          export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
-          export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+          export ARM_CLIENT_ID=${{secrets.AZ_CLIENTID}}
+          export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
+          export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
+          export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
           terraform init -input=false
           
     - name: Switch workspace if needed
       working-directory: Application/Terraform/
       run: |
           echo "Switch workspace Terraform"
-          export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
-          export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
-          export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
-          export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+          export ARM_CLIENT_ID=${{secrets.AZ_CLIENTID}}
+          export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
+          export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
+          export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
           echo "Enviornment is ${{env.environment_name}}"
           terraform workspace select ${{env.environment_name}} || terraform workspace new ${{env.environment_name}}
           echo "Workspace switched to ${{env.environment_name}}"
@@ -58,10 +58,10 @@ jobs:
       working-directory: Application/Terraform/
       run: |
         echo "Plan Terraform"
-          export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
-          export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
-          export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
-          export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+          export ARM_CLIENT_ID=${{secrets.AZ_CLIENTID}}
+          export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
+          export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
+          export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
           terraform plan -destroy -var-file=${{inputs.Environment}}.tfvars -out=tfplan -input=false
           STATUS=$?
 #          if [ $STATUS -eq 0 ]; then echo "Target environment matches to state"; elif [ $STATUS -eq 1 ]; then echo "Error found in terraform plan"; exit 1; elif [ $STATUS -eq 2 ]; then echo "Changes found in target environment"; else echo "Unknown Status returned by terraform"; exit 1;fi
@@ -73,10 +73,10 @@ jobs:
       working-directory: Application/Terraform/
       run: |
           echo "Apply Terraform"
-          export ARM_CLIENT_ID=${{secrets.AZURE_CLIENTID}}
-          export ARM_CLIENT_SECRET=${{secrets.AZURE_CLIENTSECRET}}
-          export ARM_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTIONID}}
-          export ARM_TENANT_ID=${{secrets.AZURE_TENANTID}}
+          export ARM_CLIENT_ID=${{secrets.AZ_CLIENTID}}
+          export ARM_CLIENT_SECRET=${{secrets.AZ_CLIENTSECRET}}
+          export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
+          export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
           terraform apply -auto-approve -input=false tfplan
      #     APP_URL=$(terraform output ApplicationURL)
      #     APP_NAME=$(terraform output ApplicationName)
