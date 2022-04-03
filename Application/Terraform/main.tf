@@ -90,7 +90,6 @@ resource "azurerm_key_vault" "cicd_vault" {
 
     key_permissions = [
        "Get",
-      "Set",
       "List",
       "Delete",
 	"Purge"
@@ -106,7 +105,6 @@ resource "azurerm_key_vault" "cicd_vault" {
 
     storage_permissions = [
       "Get",
-      "Set",
       "List",
       "Delete",
 	"Purge"    ]
