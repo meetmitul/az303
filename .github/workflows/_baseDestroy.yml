@@ -1,5 +1,5 @@
 name: Branch Deleted
-on: delete
+on: workflow_dispatch # delete
 jobs:
   delete:
     if: github.event.ref_type == 'branch'
