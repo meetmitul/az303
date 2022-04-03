@@ -89,21 +89,27 @@ resource "azurerm_key_vault" "cicd_vault" {
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
-      "Get",
-	  "Delete"
+       "Get",
+      "Set",
+      "List",
+      "Delete",
+	"Purge"
     ]
 
     secret_permissions = [
       "Get",
       "Set",
       "List",
-	  "Delete"
+      "Delete",
+	"Purge"
     ]
 
     storage_permissions = [
       "Get",
-	  "Delete"
-    ]
+      "Set",
+      "List",
+      "Delete",
+	"Purge"    ]
   }
 }
 
