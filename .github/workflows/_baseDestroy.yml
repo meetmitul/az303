@@ -3,7 +3,7 @@ on: delete
 jobs:
   delete:
 #    if: github.event.ref_type == 'branch'
-    name: 'Destroy Environment for ${GITHUB_REF#refs/heads/}' 
+    name: 'Destroy Environment' 
     runs-on: ubuntu-latest
     environment: 
       name: Adhoc 
