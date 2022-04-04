@@ -1,9 +1,9 @@
-name: Branch Deleted
+name: Branch Deleted ${GITHUB_REF#refs/heads/}
 on: delete
 jobs:
   delete:
 #    if: github.event.ref_type == 'branch'
-    name: 'DestroyEnvironment'
+    name: 'Destroy Environment for ${GITHUB_REF#refs/heads/}' 
     runs-on: ubuntu-latest
     environment: 
       name: Adhoc 
