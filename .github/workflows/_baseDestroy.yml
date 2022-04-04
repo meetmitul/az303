@@ -1,4 +1,4 @@
-name: Branch Deleted ${GITHUB_REF#refs/heads/}
+name: Destroy Environment
 on: delete
 jobs:
   delete:
