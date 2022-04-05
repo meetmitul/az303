@@ -174,3 +174,6 @@ jobs:
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
+  CreateTag:
+    uses: meetmitul/az303/.github/workflows/CreateTag.yml@master
+    needs: DeployAppToProduction
