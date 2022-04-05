@@ -1,6 +1,7 @@
 name: Deploy to System Test 
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:          
   DeployInfra:
