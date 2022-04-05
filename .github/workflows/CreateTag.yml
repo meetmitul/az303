@@ -4,12 +4,7 @@ name: Create Tag
 
 # Controls when the workflow will run
 on:
-  workflow_dispatch:
-    outputs:
-      TagName:
-        description: "Name of the Tag"
-        value: ${{ jobs.CreateNewTag.outputs.newTagName }}
-  
+  workflow_dispatch:  
   workflow_call:
  # pull_request:
  #   branches:    
