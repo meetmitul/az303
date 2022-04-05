@@ -32,7 +32,7 @@ jobs:
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
         
-  RecreateWebAppNameForDev:
+  ReassignOutputVariablesForDevelopment:
     runs-on: ubuntu-latest
     needs: DeployInfraToDev
     outputs:
@@ -45,7 +45,15 @@ jobs:
           AppName=${{needs.DeployInfraToDev.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
-          echo ${{needs.RecreateWebAppNameForDev.outputs.APPNAME}}
+          echo ${{needs.ReassignOutputVariablesForDevelopment.outputs.APPNAME}}
+          
+          echo  ${{needs.DeployInfraToDev.outputs.AppURL}}
+          AppURL=${{needs.DeployInfraToDev.outputs.AppURL}}
+          echo $AppURL
+          echo "::set-output name=APPURL::$AppURL"
+          echo ${{needs.ReassignOutputVariablesForDevelopment.outputs.APPURL}}
+          
+          
           
           
   DeployAppToDev:
@@ -54,16 +62,18 @@ jobs:
     needs: 
       - BuildApplication
       - DeployInfraToDev
-      - RecreateWebAppNameForDev
+      - ReassignOutputVariablesForDevelopment
     with:
       Title: Development Title
       Environment: Development
-      AppName: ${{needs.RecreateWebAppNameForDev.outputs.APPNAME}}
-      AppURL: ${{needs.DeployInfraToDev.outputs.AppName}}
+      AppName: ${{needs.ReassignOutputVariablesForDevelopment.outputs.APPNAME}}
+      AppURL: ${{needs.ReassignOutputVariablesForDevelopment.outputs.APPURL}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  
   DeployInfraToSysTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
+    needs: DeployAppToDev
     #if: ${{ true==false }}
     with:
       Environment: SystemTest
@@ -74,7 +84,7 @@ jobs:
       AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
       AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
               
-  RecreateWebAppNameForSysTest:
+  ReassignOutputVariablesForSysTest:
     runs-on: ubuntu-latest
     needs: DeployInfraToSysTest
     outputs:
@@ -87,7 +97,13 @@ jobs:
           AppName=${{needs.DeployInfraToSysTest.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
-          echo ${{needs.RecreateWebAppNameForSysTest.outputs.APPNAME}}
+          echo ${{needs.ReassignOutputVariablesForSysTest.outputs.APPNAME}}
+          
+          echo  ${{needs.DeployInfraToSysTest.outputs.AppURL}}
+          AppURL=${{needs.DeployInfraToSysTest.outputs.AppURL}}
+          echo $AppURL
+          echo "::set-output name=APPURL::$AppURL"
+          echo ${{needs.ReassignOutputVariablesForSysTest.outputs.APPURL}}
           
           
   DeployAppToSysTest:
@@ -96,12 +112,13 @@ jobs:
     needs: 
       - BuildApplication
       - DeployInfraToSysTest
-      - RecreateWebAppNameForSysTest
+      - ReassignOutputVariablesForSysTest
+      - DeployAppToDev
     with:
       Title: System Test Title
       Environment: SystemTest
-      AppName: ${{needs.RecreateWebAppNameForSysTest.outputs.APPNAME}}
-      AppURL: ${{needs.DeployInfraToSysTest.outputs.AppName}}
+      AppName: ${{needs.ReassignOutputVariablesForSysTest.outputs.APPNAME}}
+      AppURL: ${{needs.ReassignOutputVariablesForSysTest.outputs.APPURL}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
@@ -109,6 +126,7 @@ jobs:
   DeployInfraToProduction:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
+    needs: DeployAppToSysTest
     with:
       Environment: Production
     secrets:
@@ -118,11 +136,12 @@ jobs:
       AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
       AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
               
-  RecreateWebAppNameForProduction:
+  ReassignOutputVariablesForProduction:
     runs-on: ubuntu-latest
     needs: DeployInfraToProduction
     outputs:
       APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
+      APPURL: ${{steps.replaceVariable.outputs.APPURL}}
     steps:
       - name: Replace name of AppName
         id: replaceVariable
@@ -131,7 +150,13 @@ jobs:
           AppName=${{needs.DeployInfraToProduction.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
-          echo ${{needs.RecreateWebAppNameForProduction.outputs.APPNAME}}
+          echo ${{needs.ReassignOutputVariablesForProduction.outputs.APPNAME}}
+          
+          echo  ${{needs.DeployInfraToProduction.outputs.AppURL}}
+          AppURL=${{needs.DeployInfraToProduction.outputs.AppURL}}
+          echo $AppURL
+          echo "::set-output name=APPURL::$AppURL"
+          echo ${{needs.ReassignOutputVariablesForProduction.outputs.APPURL}}
           
           
   DeployAppToProduction:
@@ -140,12 +165,13 @@ jobs:
     needs: 
       - BuildApplication
       - DeployInfraToProduction
-      - RecreateWebAppNameForProduction
+      - ReassignOutputVariablesForProduction
+      - DeployAppToSysTest
     with:
       Title: Production Title
       Environment: Production
-      AppName: ${{needs.RecreateWebAppNameForProduction.outputs.APPNAME}}
-      AppURL: ${{needs.DeployInfraToProduction.outputs.AppName}}
+      AppName: ${{needs.ReassignOutputVariablesForProduction.outputs.APPNAME}}
+      AppURL: ${{needs.ReassignOutputVariablesForProduction.outputs.APPURL}}
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     
