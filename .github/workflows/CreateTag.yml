@@ -4,14 +4,22 @@ name: Create Tag
 
 # Controls when the workflow will run
 on:
- # workflow_call:
-  pull_request:
-    branches:    
-      - 'master'
-    types:
-      - closed
-
-  #workflow_dispatch:
+  workflow_dispatch:
+    outputs:
+      TagName:
+        description: "Name of the Tag"
+        value: ${{ jobs.CreateNewTag.outputs.newTagName }}
+  
+  workflow_call:
+ # pull_request:
+ #   branches:    
+ #     - 'master'
+ #   types:
+ #     - closed
+    outputs:
+      TagName:
+        description: "Name of the Tag"
+        value: ${{ jobs.CreateNewTag.outputs.newTagName }}
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
