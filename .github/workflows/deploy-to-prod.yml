@@ -1,7 +1,6 @@
 name: Deploy to Production 
 on:
   workflow_dispatch:
-  workflow_call:
 jobs:          
   DeployInfra:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
