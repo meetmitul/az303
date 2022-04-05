@@ -1,11 +1,5 @@
 name: Create Release 
 on:
-  workflow_dispatch:
-    inputs:
-      TagName:
-        required: true
-        type: string
-
   workflow_call:
     inputs:
       TagName:
