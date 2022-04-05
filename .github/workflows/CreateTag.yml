@@ -10,7 +10,10 @@ on:
  #     - 'master'
  #   types:
  #     - closed
-
+    outputs:
+      TagName:
+        description: "Name of the Tag"
+        value: ${{ jobs.CreateNewTag.outputs.newTagName }}
   #workflow_dispatch:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
