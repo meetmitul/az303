@@ -17,6 +17,9 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  BuildApplication:
+    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
+
   DeployInfraToDev:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
     #if: ${{ true==false }}
@@ -28,15 +31,13 @@ jobs:
       AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
       AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
       AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
-      
-  BuildApplication:
-    uses: meetmitul/az303/.github/workflows/_base-build.yml@master
-        
+              
   ReassignOutputVariablesForDevelopment:
     runs-on: ubuntu-latest
     needs: DeployInfraToDev
     outputs:
       APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
+      APPURL: ${{steps.replaceVariable.outputs.APPURL}}
     steps:
       - name: Replace name of AppName
         id: replaceVariable
@@ -54,8 +55,7 @@ jobs:
           echo ${{needs.ReassignOutputVariablesForDevelopment.outputs.APPURL}}
           
           
-          
-          
+         
   DeployAppToDev:
     uses: meetmitul/az303/.github/workflows/_base-deployment.yml@master
     #if: false
@@ -88,6 +88,7 @@ jobs:
     needs: DeployInfraToSysTest
     outputs:
       APPNAME: ${{steps.replaceVariable.outputs.APPNAME}}
+      APPURL: ${{steps.replaceVariable.outputs.APPURL}}
     steps:
       - name: Replace name of AppName
         id: replaceVariable
