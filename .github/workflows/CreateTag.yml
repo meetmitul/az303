@@ -4,7 +4,6 @@ name: Create Tag
 
 # Controls when the workflow will run
 on:
-  workflow_dispatch:  
   workflow_call:
  # pull_request:
  #   branches:    
