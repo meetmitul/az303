@@ -73,7 +73,6 @@ jobs:
   
   DeployInfraToSysTest:
     uses: meetmitul/az303/.github/workflows/_terraform.yml@master
-    needs: DeployAppToDev
     #if: ${{ true==false }}
     with:
       Environment: SystemTest
@@ -167,6 +166,7 @@ jobs:
       - DeployInfraToProduction
       - ReassignOutputVariablesForProduction
       - DeployAppToSysTest
+      - DeployAppToDev
     with:
       Title: Production Title
       Environment: Production
