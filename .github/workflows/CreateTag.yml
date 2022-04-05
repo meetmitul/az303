@@ -45,9 +45,3 @@ jobs:
         echo New tag pushed to repository
         echo "::set-output name=TAG_NAME::$newVersion"
   
-  CreateNewRelease:
-    if: github.event.pull_request.merged == true
-    needs: CreateNewTag
-    uses: meetmitul/az303/.github/workflows/createrelease.yml@master
-    with:
-      TagName: ${{ needs.CreateNewTag.outputs.newTagName}}
