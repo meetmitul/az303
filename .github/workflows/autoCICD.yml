@@ -177,3 +177,10 @@ jobs:
   CreateTag:
     uses: meetmitul/az303/.github/workflows/CreateTag.yml@master
     needs: DeployAppToProduction
+
+  CreateNewRelease:
+    if: github.event.pull_request.merged == true
+    needs: CreateTag
+    uses: meetmitul/az303/.github/workflows/createrelease.yml@master
+    with:
+      TagName: ${{ needs.CreateTag.outputs.newTagName}}
