@@ -41,11 +41,11 @@ jobs:
       - name: Replace name of AppName
         id: replaceVariable
         run: |
-          echo  ${{needs.DeployInfra.outputs.AppName}}
-          AppName=${{needs.DeployInfra.outputs.AppName}}
+          echo  ${{needs.DeployInfraToDev.outputs.AppName}}
+          AppName=${{needs.DeployInfraToDev.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
-          echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
+          echo ${{needs.RecreateWebAppNameForDev.outputs.APPNAME}}
           
           
   DeployAppToDev:
@@ -83,11 +83,11 @@ jobs:
       - name: Replace name of AppName
         id: replaceVariable
         run: |
-          echo  ${{needs.DeployInfra.outputs.AppName}}
-          AppName=${{needs.DeployInfra.outputs.AppName}}
+          echo  ${{needs.DeployInfraToSysTest.outputs.AppName}}
+          AppName=${{needs.DeployInfraToSysTest.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
-          echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
+          echo ${{needs.RecreateWebAppNameForSysTest.outputs.APPNAME}}
           
           
   DeployAppToSysTest:
@@ -127,11 +127,11 @@ jobs:
       - name: Replace name of AppName
         id: replaceVariable
         run: |
-          echo  ${{needs.DeployInfra.outputs.AppName}}
-          AppName=${{needs.DeployInfra.outputs.AppName}}
+          echo  ${{needs.DeployInfraToProduction.outputs.AppName}}
+          AppName=${{needs.DeployInfraToProduction.outputs.AppName}}
           echo $AppName
           echo "::set-output name=APPNAME::$AppName"
-          echo ${{needs.RecreateWebAppName.outputs.APPNAME}}
+          echo ${{needs.RecreateWebAppNameForProduction.outputs.APPNAME}}
           
           
   DeployAppToProduction:
