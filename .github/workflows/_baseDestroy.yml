@@ -78,6 +78,7 @@ jobs:
           export ARM_SUBSCRIPTION_ID=${{secrets.AZ_SUBSCRIPTIONID}}
           export ARM_TENANT_ID=${{secrets.AZ_TENANTID}}
           terraform apply -destroy -auto-approve -input=false tfplan
+          terraform workspace delete ${{env.environment_name}}
      #     APP_URL=$(terraform output ApplicationURL)
      #     APP_NAME=$(terraform output ApplicationName)
      #     echo App URL $APP_URL
