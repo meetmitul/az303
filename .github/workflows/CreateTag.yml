@@ -4,12 +4,12 @@ name: Create Tag
 
 # Controls when the workflow will run
 on:
-  workflow_call:
- # pull_request:
- #   branches:    
- #     - 'master'
- #   types:
- #     - closed
+ # workflow_call:
+  pull_request:
+    branches:    
+      - 'master'
+    types:
+      - closed
 
   #workflow_dispatch:
   
