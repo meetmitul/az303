@@ -183,4 +183,4 @@ jobs:
     needs: CreateTag
     uses: meetmitul/az303/.github/workflows/createrelease.yml@master
     with:
-      TagName: ${{ needs.CreateTag.outputs.newTagName}}
+      TagName: ${{ needs.CreateTag.outputs.TagName}}
