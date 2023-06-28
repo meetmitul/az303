@@ -52,23 +52,23 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
       
-    - name: Azure key vault - Get Secrets
-      uses: Azure/get-keyvault-secrets@v1
-      id: GetAzureSecrets
-      with:
-        # Name of the azure key vault
-        keyvault: kv-cicd-demo-${{env.environment_name}}
-        # Name of the secret to be fetched
-        secrets: topsecret
+#    - name: Azure key vault - Get Secrets
+#      uses: Azure/get-keyvault-secrets@v1
+#      id: GetAzureSecrets
+#      with:
+#        # Name of the azure key vault
+#        keyvault: kv-cicd-demo-${{env.environment_name}}
+#        # Name of the secret to be fetched
+#        secrets: topsecret
     
-    - name: Variable Substitution
-      uses: microsoft/variable-substitution@v1
-      with:
-        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-        files: '**/appsettings.json'
-      env:
-        SampleConfig.Title: ${{inputs.Title}}
-        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
+#    - name: Variable Substitution
+#      uses: microsoft/variable-substitution@v1
+#      with:
+#        # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+#        files: '**/appsettings.json'
+#      env:
+#        SampleConfig.Title: ${{inputs.Title}}
+#        SampleConfig.SuperSecret: ${{steps.GetAzureSecrets.outputs.topsecret}}
   
     - name: 'Deploy web app'
       uses: azure/webapps-deploy@v2.2.3
