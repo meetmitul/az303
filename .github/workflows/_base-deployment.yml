@@ -75,3 +75,12 @@ jobs:
       with:
         app-name: ${{ inputs.AppName }}
         package: './Application/build'
+        
+    - name: 'Update Settings in app service'
+      uses: azure/appservice-settings@v1
+      with:
+        app-name: ${{ inputs.AppName }}
+        app-settings-json: '${{ env.APP_SETTINGS }}' 
+        connection-strings-json: '${{ env.CONNECTION_STRINGS }}'
+        general-settings-json: '{"alwaysOn": "false", "webSocketsEnabled": "true"}' #'General configuration settings as Key Value pairs'
+      id: settings
