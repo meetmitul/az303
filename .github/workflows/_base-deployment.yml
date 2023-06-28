@@ -80,7 +80,7 @@ jobs:
       uses: azure/appservice-settings@v1
       with:
         app-name: ${{ inputs.AppName }}
-        app-settings-json: '${{ env.APP_SETTINGS }}' 
-        connection-strings-json: '${{ env.CONNECTION_STRINGS }}'
+        app-settings-json: '${{ vars.APP_SETTINGS }}' 
+        connection-strings-json: '${{ vars.CONNECTION_STRINGS }}'
         general-settings-json: '{"alwaysOn": "false", "webSocketsEnabled": "true"}' #'General configuration settings as Key Value pairs'
       id: settings
