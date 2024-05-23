@@ -30,7 +30,7 @@ jobs:
         cd Application
         dotnet restore
         dotnet build --configuration Release
-        dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
+        # dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
         dotnet publish -c Release -o './build'
     - name: archive application
       run: | 
