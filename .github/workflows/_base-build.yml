@@ -3,7 +3,7 @@ on:
   workflow_call:
 
 env:
-  DOTNET_VERSION: '3.1.x'                  # set this to the dot net version to use
+  DOTNET_VERSION: '6.0.201'                  # set this to the dot net version to use
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
 
     # Setup .NET Core SDK
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: xt0rted/setup-dotnet@v1.0.0 #actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }} 
     
