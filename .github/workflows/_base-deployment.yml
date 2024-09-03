@@ -36,7 +36,7 @@ jobs:
         if [ ${{inputs.Environment}} = Adhoc ]; then echo "environment_name=$PROJECTCODE" >> $GITHUB_ENV; else echo "environment_name=${{inputs.Environment}}" >> $GITHUB_ENV; fi
         echo "Environ now is ${{env.environment_name}}"
     - name: Download Build Artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       continue-on-error: false
       with:
         name: buildartifacts
