@@ -12,6 +12,7 @@ jobs:
       uses: Azure/login@v1.4.3
       continue-on-error: false
       with:
+        Environment: Development
         creds: ${{secrets.AZURE_CREDENTIALS}}
 
     - uses: Azure/cli@v2.1.0
