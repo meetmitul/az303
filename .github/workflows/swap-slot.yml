@@ -13,7 +13,7 @@ jobs:
       continue-on-error: false
       with:
         Environment: Development
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
     - uses: Azure/cli@v2.1.0
       with:
