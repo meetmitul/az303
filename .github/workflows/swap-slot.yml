@@ -1,0 +1,19 @@
+name: SwapSlots
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  swapslot:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: Azure/cli@v2.1.0
+      with:
+      # Specify the script here
+        inlineScript: 
+          az webapp deployment slot swap  -g rg-ccb-prod-ausoutheast -n app-ccb-prod-ausoutheast-b2b-service --slot app-ccb-prod-ausoutheast-b2b-service --target-slot app-ccb-prod-ausoutheast-b2b-service-staging-slot
+
+      # Azure CLI version to be used to execute the script. If not provided, latest version is used
+        # azcliversion: # optional, default is agentazcliversion
+          
