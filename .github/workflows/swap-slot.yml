@@ -8,6 +8,12 @@ jobs:
   swapslot:
     runs-on: ubuntu-latest
     steps:
+    - name: Login to Azure
+      uses: Azure/login@v1.4.3
+      continue-on-error: false
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+
     - uses: Azure/cli@v2.1.0
       with:
       # Specify the script here
