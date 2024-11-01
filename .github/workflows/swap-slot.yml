@@ -5,8 +5,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   # workflow_dispatch:
   schedule:
+    - cron: "0,15,30,45 1 * * *"   # <=== Change this value . this is 6AM utc which is 5pm AEST
     #- cron: "0 6 * * *"   # <=== Change this value . this is 6AM utc which is 5pm AEST
-    - cron: "30 * * * *"   # <=== Change this value . this is 6AM utc which is 5pm AEST
 jobs:
   swapslot:
     runs-on: ubuntu-latest
