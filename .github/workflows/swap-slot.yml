@@ -19,7 +19,7 @@ jobs:
       with:
       # Specify the script here
         inlineScript: 
-          az webapp deployment slot swap  -g rg-cicd-demo-development -n app-cicd-demo-Development --slot production --target-slot staging-slot
+          az webapp deployment slot swap  -g rg-cicd-demo-development -n app-cicd-demo-Development --slot app-cicd-demo-Development --target-slot staging-slot
 
       # Azure CLI version to be used to execute the script. If not provided, latest version is used
         # azcliversion: # optional, default is agentazcliversion
