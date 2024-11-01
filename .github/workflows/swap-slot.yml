@@ -7,11 +7,11 @@ on:
 jobs:
   swapslot:
     runs-on: ubuntu-latest
+    environment: Development
     steps:
     - name: Login to Azure
       uses: Azure/login@v2.2.0
       with:
-        environment: Development
         creds: ${{ secrets.AZURE_CREDENTIALS }}
       continue-on-error: false
 
