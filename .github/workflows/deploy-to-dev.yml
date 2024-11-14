@@ -2,17 +2,17 @@ name: Deploy to Development
 on:
   workflow_dispatch:
 jobs:          
-  DeployInfra:
-    uses: meetmitul/az303/.github/workflows/_terraform.yml@master
-    #if: ${{ true==false }}
-    with:
-      Environment: Development
-    secrets:
-      #AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-      AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
-      AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
-      AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
-      AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
+  #DeployInfra:
+  #  uses: meetmitul/az303/.github/workflows/_terraform.yml@master
+  #  #if: ${{ true==false }}
+  #  with:
+  #    Environment: Development
+  #  secrets:
+  #    #AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  #    AZURE_TENANTID: ${{ secrets.AZ_TENANTID }}
+  #    AZURE_CLIENTID: ${{ secrets.AZ_CLIENTID }}
+  #    AZURE_CLIENTSECRET: ${{ secrets.AZ_CLIENTSECRET }}
+  #    AZURE_SUBSCRIPTIONID: ${{ secrets.AZ_SUBSCRIPTIONID }}
       
   BuildApplication:
     uses: meetmitul/az303/.github/workflows/_base-build.yml@master
